@@ -1,0 +1,23 @@
+{
+  "home": {
+    "enable": true,
+    "host": "@",
+    "visibility": "public",
+    "root": "/srv/state/public-site",
+    "description": "Public apex site served through Cloudflare Tunnel"
+  },
+  "example-internal": {
+    "enable": false,
+    "host": "example",
+    "visibility": "internal",
+    "response": "Internal route placeholder",
+    "description": "Example private tailnet-only route"
+  },
+  "example-public": {
+    "enable": false,
+    "host": "example",
+    "visibility": "public",
+    "response": "Public route placeholder",
+    "description": "Example public route"
+  }
+}
