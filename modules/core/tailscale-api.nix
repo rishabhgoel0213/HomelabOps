@@ -33,6 +33,7 @@ let
       }
 
       access_token() {
+        local requested_scope="''${1:-}"
         need_credentials
         args=(
           --fail-with-body
@@ -42,8 +43,8 @@ let
           --data-urlencode "client_id=''${TAILSCALE_OAUTH_CLIENT_ID}"
           --data-urlencode "client_secret=''${TAILSCALE_OAUTH_CLIENT_SECRET}"
         )
-        if [[ -n "''${TAILSCALE_OAUTH_SCOPES:-}" ]]; then
-          args+=(--data-urlencode "scope=''${TAILSCALE_OAUTH_SCOPES}")
+        if [[ -n "$requested_scope" ]]; then
+          args+=(--data-urlencode "scope=$requested_scope")
         fi
         curl "''${args[@]}" "https://api.tailscale.com/api/v2/oauth/token" | jq -r '.access_token'
       }
@@ -52,7 +53,15 @@ let
         method="$1"
         path="$2"
         body="''${3:-}"
-        token="$(access_token)"
+        scope="''${TAILSCALE_API_SCOPE:-}"
+        if [[ -z "$scope" ]]; then
+          if [[ "$method" == "GET" ]]; then
+            scope="''${TAILSCALE_OAUTH_READ_SCOPES:-''${TAILSCALE_OAUTH_SCOPES:-dns:read}}"
+          else
+            scope="''${TAILSCALE_OAUTH_WRITE_SCOPES:-dns:write}"
+          fi
+        fi
+        token="$(access_token "$scope")"
 
         if [[ -n "$body" ]]; then
           curl --fail-with-body --silent --show-error \
@@ -95,7 +104,8 @@ Reads credentials from:
 Expected variables:
   TAILSCALE_OAUTH_CLIENT_ID
   TAILSCALE_OAUTH_CLIENT_SECRET
-  TAILSCALE_OAUTH_SCOPES=dns:read dns:write
+  TAILSCALE_OAUTH_READ_SCOPES=dns:read
+  TAILSCALE_OAUTH_WRITE_SCOPES=dns:write
   TAILSCALE_TAILNET=-
 EOF
           ;;

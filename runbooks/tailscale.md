@@ -22,6 +22,9 @@ DNS: Read
 DNS: Write
 ```
 
+`tsctl` requests those scopes separately because Tailscale grants DNS write as
+the `dns` token scope when `dns:write` is requested by itself.
+
 For broader Codex-driven tailnet administration, add the other scopes you want
 Codex to manage. Prefer starting narrow and expanding deliberately.
 
