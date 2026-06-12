@@ -5,7 +5,8 @@ server.
 
 - `resume/Resume.typ` is the editable Typst resume source.
 - `resume/Resume.pdf` is the canonical built resume PDF.
-- `public-site/` mirrors source documents from the old public profile/site repo.
+- `github-profile/README.md` is the managed source for the public
+  `rishabhgoel0213/rishabhgoel0213` GitHub profile repository.
 
 The public site deployment copies `resume/Resume.pdf` to
 `/srv/state/public-site/rishabh-goel-resume.pdf`. Compatibility URLs such as

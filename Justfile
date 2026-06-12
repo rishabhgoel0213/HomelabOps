@@ -91,3 +91,6 @@ tailscale-apply-internal-dns:
 
 vaultwarden-signups action:
     scripts/set-vaultwarden-signups "{{action}}"
+
+github-profile-sync:
+    scripts/sync-github-profile

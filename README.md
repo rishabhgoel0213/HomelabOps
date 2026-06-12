@@ -26,6 +26,7 @@ just route-add vault internal http://127.0.0.1:8222
 just cloudflare-store-token
 just tailscale-store-oauth
 just vaultwarden-signups disable
+just github-profile-sync
 just rollback
 ```
 
@@ -43,4 +44,5 @@ Important source documents live under `documents/`. The resume source and
 canonical PDF are in `documents/resume/`; the served static site shell is in
 `assets/public-site/`. During activation, the public resume PDF is copied into
 `/srv/state/public-site/rishabh-goel-resume.pdf`, while old resume URLs redirect
-there.
+there. The public GitHub profile repository README is managed from
+`documents/github-profile/README.md`.
