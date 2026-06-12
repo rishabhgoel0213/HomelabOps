@@ -98,6 +98,7 @@
     curl
     direnv
     git
+    gh
     htop
     jq
     just
