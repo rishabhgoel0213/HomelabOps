@@ -32,7 +32,8 @@ Tailscale shows the OAuth client secret once. Store it immediately in Apple
 Passwords/Vaultwarden, then run:
 
 ```bash
-~/store-tailscale-oauth
+cd /srv/ops
+just tailscale-store-oauth
 ```
 
 Verify:

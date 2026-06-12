@@ -55,6 +55,12 @@ Edit `secrets/homelab.yaml` with:
 just secrets-edit
 ```
 
+Or store/rotate the Cloudflare token interactively:
+
+```bash
+just cloudflare-store-token
+```
+
 Use this shape for the Cloudflare admin entry:
 
 ```yaml

@@ -47,6 +47,12 @@ secrets-edit:
 secrets-check:
     sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops --decrypt secrets/homelab.yaml >/dev/null
 
+cloudflare-store-token:
+    scripts/store-cloudflare-token
+
+cloudflare-store-token-from-env:
+    scripts/store-cloudflare-dns-token-from-env
+
 cloudflare-login:
     cfctl tunnel-login
 
@@ -65,6 +71,9 @@ cloudflare-dns:
 tailscale-ip:
     tailscale ip -4
 
+tailscale-store-oauth:
+    scripts/store-tailscale-oauth
+
 tailscale-verify:
     tsctl verify
 
@@ -79,3 +88,6 @@ tailscale-split-dns:
 
 tailscale-apply-internal-dns:
     scripts/configure-tailscale-internal-dns
+
+vaultwarden-signups action:
+    scripts/set-vaultwarden-signups "{{action}}"

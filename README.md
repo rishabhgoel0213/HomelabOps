@@ -23,6 +23,9 @@ just switch
 just routes
 just route-add demo public http://127.0.0.1:3000
 just route-add vault internal http://127.0.0.1:8222
+just cloudflare-store-token
+just tailscale-store-oauth
+just vaultwarden-signups disable
 just rollback
 ```
 
