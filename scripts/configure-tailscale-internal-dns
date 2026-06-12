@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+domain="${1:-internal.therealrishabh.com}"
+resolver="${2:-100.73.159.103}"
+
+body="$(jq -n --arg domain "$domain" --arg resolver "$resolver" '{($domain): [$resolver]}')"
+tsctl api PATCH /tailnet/-/dns/split-dns "$body"

@@ -73,3 +73,9 @@ tailscale-devices:
 
 tailscale-dns:
     tsctl dns-nameservers
+
+tailscale-split-dns:
+    tsctl api GET /tailnet/-/dns/split-dns
+
+tailscale-apply-internal-dns:
+    scripts/configure-tailscale-internal-dns

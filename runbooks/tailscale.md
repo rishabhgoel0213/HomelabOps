@@ -42,6 +42,13 @@ just tailscale-verify
 just tailscale-dns
 ```
 
+Apply or repair split DNS for private homelab apps:
+
+```bash
+just tailscale-apply-internal-dns
+just tailscale-split-dns
+```
+
 ## Current Internal DNS Target
 
 The server's Tailscale IPv4 is:
