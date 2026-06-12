@@ -1,4 +1,5 @@
 result
+secrets/homelab.yaml
 secrets/*.plain.yaml
 .terraform/
 *.tfstate

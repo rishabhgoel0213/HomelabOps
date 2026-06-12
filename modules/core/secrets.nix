@@ -6,7 +6,8 @@ in
 {
   config = lib.mkIf cfg.secrets.enable {
     sops = {
-      defaultSopsFile = ../../secrets/homelab.yaml;
+      defaultSopsFile = /srv/ops/secrets/homelab.yaml;
+      validateSopsFiles = false;
       age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
       secrets = {

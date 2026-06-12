@@ -6,22 +6,22 @@ default:
     @just --list
 
 check:
-    nix flake check
+    nix flake check --impure
 
 build:
-    sudo nixos-rebuild build --flake .#{{host}}
+    sudo nixos-rebuild build --impure --flake .#{{host}}
 
 test:
-    sudo nixos-rebuild test --flake .#{{host}}
+    sudo nixos-rebuild test --impure --flake .#{{host}}
 
 switch:
-    sudo nixos-rebuild switch --flake .#{{host}}
+    sudo nixos-rebuild switch --impure --flake .#{{host}}
 
 rollback:
     sudo nixos-rebuild switch --rollback
 
 routes:
-    nix eval --json .#nixosConfigurations.{{host}}.config.homelab.routeTable | jq .
+    nix eval --impure --json .#nixosConfigurations.{{host}}.config.homelab.routeTable | jq .
 
 route-add name visibility upstream:
     scripts/add-route "{{name}}" "{{visibility}}" "{{upstream}}"
