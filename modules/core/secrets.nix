@@ -10,6 +10,11 @@ in
       age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
       secrets = {
+        "cloudflare-admin.env" = {
+          owner = "rishabh";
+          group = "users";
+          mode = "0400";
+        };
         "cloudflare-dns.env" = { };
         "cloudflared-tunnel.json" = { };
         "vaultwarden.env" = { };

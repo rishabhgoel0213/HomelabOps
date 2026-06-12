@@ -1,7 +1,5 @@
-# Replace the placeholder recipient after deriving this host's age public key.
-# One way from an admin workstation:
-#   ssh-keyscan nixos-pc | ssh-to-age
+# Recipient derived from /etc/ssh/ssh_host_ed25519_key.pub.
 
 creation_rules:
   - path_regex: secrets/.*\.yaml$
-    age: age1replacewithserverrecipient0000000000000000000000000000000000000000000000000
+    age: age1uj4ppzujd5jd2p4mh0hu9476zy0czhfr4hjl87gf2venl9cx4fzqzyn72a

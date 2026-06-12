@@ -104,6 +104,7 @@
     openssh
     restic
     ripgrep
+    ssh-to-age
     sops
     tailscale
     tmux

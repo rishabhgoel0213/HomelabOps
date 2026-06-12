@@ -7,6 +7,7 @@ The intended operating model is:
 - NixOS flakes own durable host configuration.
 - Caddy owns HTTP routing.
 - Cloudflare Tunnel owns public ingress for `therealrishabh.com` and `*.therealrishabh.com`.
+- `cfctl`, `wrangler`, and OpenTofu own Cloudflare command-line control.
 - Tailscale plus CoreDNS own private ingress for `*.internal.therealrishabh.com`.
 - Docker owns lab and CUDA workloads.
 - sops-nix owns runtime secrets.
@@ -31,3 +32,4 @@ Secret-dependent services are disabled by default. Bootstrap them in this order:
 4. Enable ACME, Cloudflare Tunnel, private DNS, Vaultwarden, backups, and Backrest as credentials become available.
 
 See `runbooks/bootstrap.md` for the detailed first setup.
+See `runbooks/cloudflare.md` for Cloudflare admin CLI setup.

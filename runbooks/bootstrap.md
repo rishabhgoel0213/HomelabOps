@@ -23,7 +23,9 @@ Replace the placeholder recipient in `.sops.yaml`.
 
 ## 3. Create Cloudflare Credentials
 
-Create a Cloudflare API token for ACME DNS-01:
+Create Cloudflare API tokens as described in `runbooks/cloudflare.md`.
+
+At minimum, ACME DNS-01 needs:
 
 - Zone: DNS: Edit
 - Zone: Zone: Read
@@ -56,6 +58,7 @@ sops secrets/homelab.yaml
 
 The file must contain:
 
+- `cloudflare-admin.env`
 - `cloudflare-dns.env`
 - `cloudflared-tunnel.json`
 - `vaultwarden.env`

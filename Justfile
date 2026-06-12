@@ -42,10 +42,19 @@ backup-now:
     sudo systemctl start restic-backups-homelab.service
 
 cloudflare-login:
-    cloudflared tunnel login
+    cfctl tunnel-login
 
 cloudflare-create-tunnel name:
-    cloudflared tunnel create "{{name}}"
+    cfctl tunnel-create "{{name}}"
+
+cloudflare-verify:
+    cfctl verify
+
+cloudflare-zones:
+    cfctl zones
+
+cloudflare-dns:
+    cfctl dns
 
 tailscale-ip:
     tailscale ip -4
