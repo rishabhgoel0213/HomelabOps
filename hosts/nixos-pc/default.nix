@@ -28,11 +28,10 @@
     domain = "therealrishabh.com";
     internalSubdomain = "internal";
 
-    # Fill this with `tailscale ip -4` before enabling private DNS.
-    tailnetIp = null;
+    tailnetIp = "100.73.159.103";
 
     acme = {
-      enable = false;
+      enable = true;
       email = "rishabhgoel0213@gmail.com";
     };
 
@@ -43,15 +42,15 @@
       tunnelId = "b0bf2296-d35d-4d03-aca8-ee3d4ecaa8fa";
     };
 
-    privateDns.enable = false;
+    privateDns.enable = true;
 
     backups = {
       enable = false;
       repository = null;
     };
 
-    vaultwarden.enable = false;
-    backrest.enable = false;
+    vaultwarden.enable = true;
+    backrest.enable = true;
   };
 
   system.stateVersion = "26.05";

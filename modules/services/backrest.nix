@@ -14,7 +14,7 @@ in
         "/srv/state:/srv/state:ro"
         "/srv/backups:/srv/backups"
       ];
-      pull = "newer";
+      pull = "missing";
     };
 
     homelab.routes.backups = {
