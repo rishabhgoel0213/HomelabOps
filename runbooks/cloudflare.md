@@ -49,7 +49,13 @@ Passwords/Vaultwarden and in the encrypted `secrets/homelab.yaml` file.
 
 ## Secret File
 
-Edit `secrets/homelab.yaml` with `sops`:
+Edit `secrets/homelab.yaml` with:
+
+```bash
+just secrets-edit
+```
+
+Use this shape for the Cloudflare admin entry:
 
 ```yaml
 cloudflare-admin.env: |
@@ -74,6 +80,7 @@ just switch
 Verify:
 
 ```bash
+just secrets-check
 cfctl verify
 cfctl zones
 cfctl dns

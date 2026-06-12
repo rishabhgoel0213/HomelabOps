@@ -52,8 +52,8 @@ Keep `*.internal.therealrishabh.com` out of public DNS.
 ## 4. Create secrets/homelab.yaml
 
 ```bash
-cp secrets/homelab.example.yaml secrets/homelab.yaml
-sops secrets/homelab.yaml
+just secrets-edit
+just secrets-check
 ```
 
 The file must contain:

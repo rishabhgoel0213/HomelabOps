@@ -36,11 +36,11 @@
       email = "rishabhgoel0213@gmail.com";
     };
 
-    secrets.enable = false;
+    secrets.enable = true;
 
     publicTunnel = {
-      enable = false;
-      tunnelId = null;
+      enable = true;
+      tunnelId = "b0bf2296-d35d-4d03-aca8-ee3d4ecaa8fa";
     };
 
     privateDns.enable = false;

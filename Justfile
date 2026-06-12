@@ -1,4 +1,4 @@
-set shell := ["bash", "-euo", "pipefail", "-c"]
+set shell := ["bash", "-eo", "pipefail", "-c"]
 
 host := env_var_or_default("HOST", "nixos-pc")
 
@@ -40,6 +40,12 @@ status:
 
 backup-now:
     sudo systemctl start restic-backups-homelab.service
+
+secrets-edit:
+    sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops secrets/homelab.yaml
+
+secrets-check:
+    sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops --decrypt secrets/homelab.yaml >/dev/null
 
 cloudflare-login:
     cfctl tunnel-login

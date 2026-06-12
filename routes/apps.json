@@ -1,10 +1,10 @@
 {
   "home": {
     "enable": true,
-    "host": "@",
+    "host": "home",
     "visibility": "public",
     "root": "/srv/state/public-site",
-    "description": "Public apex site served through Cloudflare Tunnel"
+    "description": "Public home page served through Cloudflare Tunnel"
   },
   "example-internal": {
     "enable": false,
