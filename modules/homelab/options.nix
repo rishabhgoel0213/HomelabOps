@@ -103,6 +103,18 @@ in
                 description = "Reverse proxy upstream, such as http://127.0.0.1:3000.";
               };
 
+              redirectTo = mkOption {
+                type = types.nullOr types.str;
+                default = null;
+                description = "Redirect target, such as https://home.example.com{uri}.";
+              };
+
+              redirectStatus = mkOption {
+                type = types.int;
+                default = 308;
+                description = "HTTP status code used when redirectTo is set.";
+              };
+
               root = mkOption {
                 type = types.nullOr types.str;
                 default = null;

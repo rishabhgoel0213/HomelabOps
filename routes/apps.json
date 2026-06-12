@@ -4,7 +4,21 @@
     "host": "home",
     "visibility": "public",
     "root": "/srv/state/public-site",
-    "description": "Public home page served through Cloudflare Tunnel"
+    "description": "Public personal website served through Cloudflare Tunnel"
+  },
+  "apex": {
+    "enable": true,
+    "host": "@",
+    "visibility": "public",
+    "redirectTo": "https://home.therealrishabh.com{uri}",
+    "description": "Apex redirect to the public personal website"
+  },
+  "www": {
+    "enable": true,
+    "host": "www",
+    "visibility": "public",
+    "redirectTo": "https://home.therealrishabh.com{uri}",
+    "description": "www redirect to the public personal website"
   },
   "example-internal": {
     "enable": false,

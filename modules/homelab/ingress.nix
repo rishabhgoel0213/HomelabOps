@@ -34,7 +34,11 @@ let
     route:
     let
       body =
-        if route.upstream != null then
+        if route.redirectTo != null then
+          ''
+            redir ${route.redirectTo} ${toString route.redirectStatus}
+          ''
+        else if route.upstream != null then
           ''
             encode zstd gzip
             reverse_proxy ${route.upstream}
@@ -121,7 +125,9 @@ in
       inherit (route) visibility description;
       host = routeFqdn route;
       target =
-        if route.upstream != null then
+        if route.redirectTo != null then
+          "redirect:${toString route.redirectStatus}:${route.redirectTo}"
+        else if route.upstream != null then
           route.upstream
         else if route.root != null then
           route.root
