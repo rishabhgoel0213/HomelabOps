@@ -17,6 +17,11 @@ in
         };
         "cloudflare-dns.env" = { };
         "cloudflared-tunnel.json" = { };
+        "tailscale-oauth.env" = {
+          owner = "rishabh";
+          group = "users";
+          mode = "0400";
+        };
         "vaultwarden.env" = { };
         "restic-password" = { };
         "restic.env" = { };

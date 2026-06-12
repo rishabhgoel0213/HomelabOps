@@ -16,6 +16,7 @@
     ../../modules/core/backups.nix
     ../../modules/core/dns.nix
     ../../modules/core/cloudflare.nix
+    ../../modules/core/tailscale-api.nix
 
     ../../modules/services/vaultwarden.nix
     ../../modules/services/backrest.nix

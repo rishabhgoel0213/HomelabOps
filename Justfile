@@ -64,3 +64,12 @@ cloudflare-dns:
 
 tailscale-ip:
     tailscale ip -4
+
+tailscale-verify:
+    tsctl verify
+
+tailscale-devices:
+    tsctl devices
+
+tailscale-dns:
+    tsctl dns-nameservers
