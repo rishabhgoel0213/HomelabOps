@@ -36,6 +36,8 @@ Secret-dependent services are disabled by default. Bootstrap them in this order:
 See `runbooks/bootstrap.md` for the detailed first setup.
 See `runbooks/cloudflare.md` for Cloudflare admin CLI setup.
 
-The migrated public profile/site source documents from
-`github.com/rishabhgoel0213/rishabhgoel0213` are mirrored under
-`docs/public-site/`. The served static assets live under `assets/public-site/`.
+Important source documents live under `documents/`. The resume source and
+canonical PDF are in `documents/resume/`; the served static site shell is in
+`assets/public-site/`. During activation, the public resume PDF is copied into
+`/srv/state/public-site/rishabh-goel-resume.pdf`, while old resume URLs redirect
+there.

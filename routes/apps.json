@@ -4,6 +4,7 @@
     "host": "home",
     "visibility": "public",
     "root": "/srv/state/public-site",
+    "extraConfig": "@resumeAliases path /resume.pdf /Resume.pdf\nredir @resumeAliases /rishabh-goel-resume.pdf 308",
     "description": "Public personal website served through Cloudflare Tunnel"
   },
   "apex": {
