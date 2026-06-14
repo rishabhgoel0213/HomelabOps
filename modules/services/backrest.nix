@@ -68,6 +68,7 @@ in
         "/home/rishabh:/backup/home/rishabh:ro"
       ];
       environment = {
+        BACKREST_CONFIG = "/data/config.json";
         BACKREST_DATA = "/data";
         XDG_CACHE_HOME = "/cache";
         TMPDIR = "/tmp";
