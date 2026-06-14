@@ -39,6 +39,9 @@ Secret-dependent services are disabled by default. Bootstrap them in this order:
 
 See `runbooks/bootstrap.md` for the detailed first setup.
 See `runbooks/cloudflare.md` for Cloudflare admin CLI setup.
+See `runbooks/backups.md` for Restic backups to a Hetzner Storage Box.
+See `runbooks/bitwarden-sops.md` for selectively promoting Vaultwarden secrets into sops.
+See `runbooks/syncthing.md` for private Finder-friendly file sync setup.
 
 Important source documents live under `documents/`. The resume source and
 canonical PDF are in `documents/resume/`; the served static site shell is in
