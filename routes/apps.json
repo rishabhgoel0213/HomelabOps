@@ -28,6 +28,14 @@
     "response": "Internal route placeholder",
     "description": "Example private tailnet-only route"
   },
+  "sync": {
+    "enable": true,
+    "host": "sync",
+    "visibility": "internal",
+    "upstream": "http://127.0.0.1:8384",
+    "upstreamHostHeader": "127.0.0.1:8384",
+    "description": "Syncthing private file sync UI"
+  },
   "example-public": {
     "enable": false,
     "host": "example",

@@ -21,6 +21,7 @@
     ../../modules/services/vaultwarden.nix
     ../../modules/services/backrest.nix
     ../../modules/services/public-site.nix
+    ../../modules/services/syncthing.nix
 
     ../../routes
   ];
@@ -57,6 +58,7 @@
 
     vaultwarden.enable = true;
     backrest.enable = true;
+    syncthing.enable = true;
   };
 
   system.stateVersion = "26.05";

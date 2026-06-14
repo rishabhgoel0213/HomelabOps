@@ -41,7 +41,7 @@ let
         else if route.upstream != null then
           ''
             encode zstd gzip
-            reverse_proxy ${route.upstream}
+            reverse_proxy ${route.upstream}${optionalString (route.upstreamHostHeader != null) " {\n              header_up Host ${route.upstreamHostHeader}\n            }"}
           ''
         else if route.root != null then
           ''

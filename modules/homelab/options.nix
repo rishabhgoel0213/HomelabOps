@@ -70,6 +70,7 @@ in
 
     vaultwarden.enable = mkEnableOption "Vaultwarden private password vault";
     backrest.enable = mkEnableOption "Backrest private restic web UI";
+    syncthing.enable = mkEnableOption "Syncthing private file sync";
 
     routes = mkOption {
       default = { };
@@ -111,6 +112,12 @@ in
                 type = types.nullOr types.str;
                 default = null;
                 description = "Reverse proxy upstream, such as http://127.0.0.1:3000.";
+              };
+
+              upstreamHostHeader = mkOption {
+                type = types.nullOr types.str;
+                default = null;
+                description = "Optional Host header value to send to the reverse proxy upstream.";
               };
 
               redirectTo = mkOption {
