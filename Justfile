@@ -42,10 +42,13 @@ backup-now:
     sudo systemctl start restic-backups-homelab.service
 
 secrets-edit:
-    sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops secrets/homelab.yaml
+    status=0; sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops secrets/homelab.yaml || status=$?; if [ "$status" -ne 0 ] && [ "$status" -ne 200 ]; then exit "$status"; fi
 
 secrets-check:
     sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops --decrypt secrets/homelab.yaml >/dev/null
+
+bitwarden-promote:
+    nix shell --inputs-from . nixpkgs#bitwarden-cli nixpkgs#fzf --command scripts/promote-bitwarden-secret
 
 cloudflare-store-token:
     scripts/store-cloudflare-token

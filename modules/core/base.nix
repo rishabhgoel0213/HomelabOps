@@ -91,12 +91,14 @@
 
   environment.systemPackages = with pkgs; [
     age
+    bitwarden-cli
     bubblewrap
     caddy
     cloudflared
     codex
     curl
     direnv
+    fzf
     git
     gh
     htop
