@@ -1,6 +1,6 @@
 # Docker Web App Lab
 
-Copy this directory into `/srv/lab/<name>`, add your app files, and run:
+Copy this directory into `/home/rishabh/Projects/<name>`, add your app files, and run:
 
 ```bash
 docker compose up

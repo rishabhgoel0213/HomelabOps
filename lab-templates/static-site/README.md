@@ -3,7 +3,7 @@
 Use this for one-off static pages.
 
 ```bash
-cd /srv/lab
+cd /home/rishabh/Projects
 cp -r /srv/ops/lab-templates/static-site my-page
 cd my-page
 python3 -m http.server 3000 --bind 127.0.0.1
