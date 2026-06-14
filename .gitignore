@@ -1,8 +1,2 @@
 result
-secrets/homelab.yaml
-secrets/*.plain.yaml
-.terraform/
-*.tfstate
-*.tfstate.*
-cloudflare/.terraform/
-cloudflare/.terraform.lock.hcl
+/secrets/

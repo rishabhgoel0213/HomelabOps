@@ -1,7 +1,7 @@
 # Bitwarden To Sops
 
 Use `just bitwarden-promote` to copy one selected Bitwarden/Vaultwarden field
-into `secrets/homelab.yaml`.
+into `/home/rishabh/.config/homelab/secrets.yaml`.
 
 The tool:
 

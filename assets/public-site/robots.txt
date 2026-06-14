@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://home.therealrishabh.com/sitemap.xml

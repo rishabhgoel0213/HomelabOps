@@ -49,21 +49,29 @@ therealrishabh.com       CNAME <tunnel-id>.cfargotunnel.com
 
 Keep `*.internal.therealrishabh.com` out of public DNS.
 
-## 4. Create secrets/homelab.yaml
+## 4. Create The Local Sops File
 
 ```bash
 just secrets-edit
 just secrets-check
 ```
 
+The encrypted file lives at:
+
+```text
+/home/rishabh/.config/homelab/secrets.yaml
+```
+
+Use `runbooks/homelab-secrets.example.yaml` as the shape reference.
+
 The file must contain:
 
+- `network-manager.env`
 - `cloudflare-admin.env`
 - `cloudflare-dns.env`
 - `cloudflared-tunnel.json`
 - `vaultwarden.env`
 - `restic-password`
-- `restic.env`
 - `restic-ssh-key` and `restic-known-hosts` if using Restic over SSH/SFTP
 
 ## 5. Enable Services
@@ -84,12 +92,8 @@ homelab = {
 
   privateDns.enable = true;
   vaultwarden.enable = true;
-  backrest.enable = true;
-
-  backups = {
-    # Backrest owns backup schedules; this disables the standalone NixOS
-    # restic timer while keeping shared repository/SSH settings available.
-    enable = false;
+  backrest = {
+    enable = true;
     repository = "sftp:u123456@u123456.your-storagebox.de:/home/homelab";
     sshTarget = "u123456@u123456.your-storagebox.de";
     sshPort = 23;

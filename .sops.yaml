@@ -1,5 +1,5 @@
 # Recipient derived from /etc/ssh/ssh_host_ed25519_key.pub.
 
 creation_rules:
-  - path_regex: secrets/.*\.yaml$
+  - path_regex: /home/rishabh/\.config/homelab/secrets\.yaml$
     age: age1uj4ppzujd5jd2p4mh0hu9476zy0czhfr4hjl87gf2venl9cx4fzqzyn72a

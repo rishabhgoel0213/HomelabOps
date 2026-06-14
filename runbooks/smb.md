@@ -30,7 +30,8 @@ To retrieve the password on the server:
 ```bash
 cd /srv/ops
 sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' \
-  sops --decrypt --extract '["samba-password"]' secrets/homelab.yaml
+  sops --config /srv/ops/.sops.yaml --decrypt --extract '["samba-password"]' \
+  /home/rishabh/.config/homelab/secrets.yaml
 ```
 
 To make the mount persistent on macOS:
