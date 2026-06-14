@@ -24,8 +24,10 @@ in
             "root"
           ];
 
-          "interfaces" = "lo tailscale0";
-          "bind interfaces only" = "yes";
+          # Tailscale uses a /32 interface address, which Samba does not bind
+          # to reliably. Keep the port closed on non-tailnet interfaces with
+          # the host firewall and Samba's hosts allow/deny checks.
+          "bind interfaces only" = "no";
           "hosts allow" = "127.0.0.1 100.64.0.0/10";
           "hosts deny" = "0.0.0.0/0";
 
