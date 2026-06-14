@@ -11,7 +11,6 @@ let
       curl
       flarectl
       jq
-      opentofu
       wrangler
     ];
     text = ''
@@ -31,7 +30,7 @@ let
       need_token() {
         load_env
         if [[ -z "''${CLOUDFLARE_API_TOKEN:-}" ]]; then
-          echo "Missing CLOUDFLARE_API_TOKEN. Create secrets/homelab.yaml and enable homelab.secrets." >&2
+          echo "Missing CLOUDFLARE_API_TOKEN. Create /home/rishabh/.config/homelab/secrets.yaml and enable homelab.secrets." >&2
           exit 1
         fi
       }
@@ -73,7 +72,6 @@ Usage:
   cfctl tunnel-list
   cfctl wrangler ...
   cfctl flarectl ...
-  cfctl tofu ...
 
 Reads credentials from:
   /run/secrets/cloudflare-admin.env
@@ -148,14 +146,6 @@ EOF
           shift
           exec flarectl "$@"
           ;;
-        tofu)
-          load_env
-          export TF_VAR_cloudflare_account_id="''${CLOUDFLARE_ACCOUNT_ID:-}"
-          export TF_VAR_cloudflare_zone_id="''${CLOUDFLARE_ZONE_ID:-}"
-          export TF_VAR_cloudflare_zone="''${CLOUDFLARE_ZONE:-therealrishabh.com}"
-          shift
-          exec tofu -chdir=/srv/ops/cloudflare "$@"
-          ;;
         *)
           echo "Unknown command: $1" >&2
           echo "Run: cfctl help" >&2
@@ -171,7 +161,6 @@ in
       environment.systemPackages = with pkgs; [
         cfctl
         flarectl
-        opentofu
         wrangler
       ];
     }

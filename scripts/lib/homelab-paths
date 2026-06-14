@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+homelab_paths_env="${HOMELAB_PATHS_ENV:-/etc/homelab/paths.env}"
+
+if [[ ! -r "$homelab_paths_env" ]]; then
+  echo "Missing homelab paths file: $homelab_paths_env" >&2
+  exit 1
+fi
+
+# shellcheck disable=SC1090
+. "$homelab_paths_env"
+
+homelab_user="${HOMELAB_USER:-$homelab_user}"
+homelab_group="${HOMELAB_GROUP:-$homelab_group}"
+homelab_ops_root="${HOMELAB_OPS_ROOT:-$homelab_ops_root}"
+homelab_state_root="${HOMELAB_STATE_ROOT:-$homelab_state_root}"
+homelab_user_home="${HOMELAB_USER_HOME:-$homelab_user_home}"
+homelab_sops_config="${HOMELAB_SOPS_CONFIG:-$homelab_sops_config}"
+homelab_secrets_file="${HOMELAB_SECRETS_FILE:-$homelab_secrets_file}"
+homelab_public_site_source="${HOMELAB_PUBLIC_SITE_SOURCE:-$homelab_public_site_source}"
+homelab_public_site_state="${HOMELAB_PUBLIC_SITE_STATE:-$homelab_public_site_state}"
+homelab_resume_pdf="${HOMELAB_RESUME_PDF:-$homelab_resume_pdf}"
+homelab_github_profile_readme="${HOMELAB_GITHUB_PROFILE_README:-$homelab_github_profile_readme}"
+homelab_remote_share="${HOMELAB_REMOTE_SHARE:-$homelab_remote_share}"

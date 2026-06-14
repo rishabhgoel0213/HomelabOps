@@ -1,18 +1,35 @@
 { config, lib, pkgs, ... }:
 
 let
-  siteRoot = ../../assets/public-site;
-  documentsRoot = ../../documents;
+  cfg = config.homelab;
 in
 {
   systemd.tmpfiles.rules = [
-    "d /srv/state/public-site 0755 caddy caddy - -"
+    "d ${cfg.paths.publicSiteState} 0755 caddy caddy - -"
   ];
 
-  system.activationScripts.publicSite = ''
-    ${pkgs.coreutils}/bin/install -d -m 0755 -o caddy -g caddy /srv/state/public-site
-    ${pkgs.rsync}/bin/rsync -a --delete --chmod=D755,F644 ${siteRoot}/ /srv/state/public-site/
-    ${pkgs.coreutils}/bin/install -m 0644 -o caddy -g caddy ${documentsRoot}/resume/Resume.pdf /srv/state/public-site/rishabh-goel-resume.pdf
-    ${pkgs.coreutils}/bin/chown -R caddy:caddy /srv/state/public-site
-  '';
+  homelab.routes.home = {
+    enable = true;
+    host = "home";
+    visibility = "public";
+    root = cfg.paths.publicSiteState;
+    extraConfig = "@resumeAliases path /resume.pdf /Resume.pdf\nredir @resumeAliases /rishabh-goel-resume.pdf 308";
+    description = "Public personal website served through Cloudflare Tunnel";
+  };
+
+  homelab.routes.apex = {
+    enable = true;
+    host = "@";
+    visibility = "public";
+    redirectTo = "https://home.${cfg.domain}{uri}";
+    description = "Apex redirect to the public personal website";
+  };
+
+  homelab.routes.www = {
+    enable = true;
+    host = "www";
+    visibility = "public";
+    redirectTo = "https://home.${cfg.domain}{uri}";
+    description = "www redirect to the public personal website";
+  };
 }

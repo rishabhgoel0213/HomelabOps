@@ -9,7 +9,7 @@ in
       enable = true;
       user = "rishabh";
       group = "users";
-      configDir = "/srv/state/syncthing";
+      configDir = "${cfg.paths.stateRoot}/syncthing";
       guiAddress = "127.0.0.1:8384";
 
       # Pair the Mac and manage shared folders from Syncthing's UI. This keeps
@@ -45,8 +45,17 @@ in
     ];
 
     systemd.tmpfiles.rules = [
-      "d /srv/state/syncthing 0700 rishabh users - -"
+      "d ${cfg.paths.stateRoot}/syncthing 0700 rishabh users - -"
     ];
+
+    homelab.routes.sync = {
+      enable = true;
+      host = "sync";
+      visibility = "internal";
+      upstream = "http://127.0.0.1:8384";
+      upstreamHostHeader = "127.0.0.1:8384";
+      description = "Syncthing private file sync UI";
+    };
 
     assertions = [
       {

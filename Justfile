@@ -41,20 +41,20 @@ status:
 backup-now:
     @echo "Backrest owns backup runs now. Open https://backups.internal.therealrishabh.com and run the plan from the UI."
 
+public-site-deploy:
+    scripts/public-site-deploy
+
 secrets-edit:
-    status=0; sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops secrets/homelab.yaml || status=$?; if [ "$status" -ne 0 ] && [ "$status" -ne 200 ]; then exit "$status"; fi
+    scripts/secrets-edit
 
 secrets-check:
-    sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops --decrypt secrets/homelab.yaml >/dev/null
+    scripts/secrets-check
 
 bitwarden-promote:
     nix shell --inputs-from . nixpkgs#bitwarden-cli nixpkgs#fzf --command scripts/promote-bitwarden-secret
 
 cloudflare-store-token:
     scripts/store-cloudflare-token
-
-cloudflare-store-token-from-env:
-    scripts/store-cloudflare-dns-token-from-env
 
 cloudflare-login:
     cfctl tunnel-login
@@ -91,9 +91,6 @@ tailscale-split-dns:
 
 tailscale-apply-internal-dns:
     scripts/configure-tailscale-internal-dns
-
-vaultwarden-signups action:
-    scripts/set-vaultwarden-signups "{{action}}"
 
 github-profile-sync:
     scripts/sync-github-profile

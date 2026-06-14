@@ -7,7 +7,6 @@ Cloudflare is controlled from this server with:
 - `cfctl` for API calls and common operations.
 - `cloudflared` for tunnel login and tunnel management.
 - `wrangler` for Workers, Pages, and developer resources.
-- `opentofu` for declarative Cloudflare resources in `/srv/ops/cloudflare`.
 
 ## Admin Token
 
@@ -34,7 +33,6 @@ Zone: Zone: Read
 Zone: SSL and Certificates: Edit
 Zone: Zone Settings: Edit
 Account: Cloudflare Tunnel: Edit
-Account: Access: Apps and Policies: Edit
 Account: Workers Scripts: Edit
 Account: Workers Routes: Edit
 Account: Pages: Edit
@@ -45,11 +43,12 @@ Account and Zone permissions with `Edit` where available. Prefer an API token
 over the legacy Global API Key.
 
 Cloudflare only shows the token secret once. Store it immediately in Apple
-Passwords/Vaultwarden and in the encrypted `secrets/homelab.yaml` file.
+Passwords/Vaultwarden and in the encrypted
+`/home/rishabh/.config/homelab/secrets.yaml` file.
 
 ## Secret File
 
-Edit `secrets/homelab.yaml` with:
+Edit the local SOPS file with:
 
 ```bash
 just secrets-edit
@@ -111,4 +110,5 @@ cfctl tunnel-list
 ```
 
 Copy the generated tunnel credentials JSON into `cloudflared-tunnel.json` in
-`secrets/homelab.yaml`, set `homelab.publicTunnel.tunnelId`, and switch.
+`/home/rishabh/.config/homelab/secrets.yaml`, set
+`homelab.publicTunnel.tunnelId`, and switch.

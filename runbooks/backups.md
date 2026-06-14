@@ -1,8 +1,8 @@
 # Backups Runbook
 
 Backrest owns scheduled backups, retention, monitoring, and restores. Restic is
-still the backup engine underneath, but the standalone
-`restic-backups-homelab.service` timer is intentionally disabled.
+still the backup engine underneath, but there is no separate NixOS Restic timer
+for this repository.
 
 The Hetzner Storage Box repository is:
 
@@ -99,6 +99,17 @@ Repo-wide forget: disabled
 ```
 
 ## Secret Material
+
+Nix stores the repository connection settings under `homelab.backrest`:
+
+```nix
+homelab.backrest = {
+  enable = true;
+  repository = "sftp:u614006@u614006.your-storagebox.de:/home/restic/nixos-pc";
+  sshTarget = "u614006@u614006.your-storagebox.de";
+  sshPort = 23;
+};
+```
 
 Backrest gets SSH credentials from sops-managed files:
 

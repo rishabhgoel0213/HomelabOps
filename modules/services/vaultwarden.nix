@@ -28,7 +28,7 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d /srv/state/vaultwarden 0700 vaultwarden vaultwarden - -"
+      "d ${cfg.paths.stateRoot}/vaultwarden 0700 vaultwarden vaultwarden - -"
     ];
 
     assertions = [

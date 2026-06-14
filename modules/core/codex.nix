@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 
+let
+  cfg = config.homelab;
+in
 {
   systemd.services.codex-remote-control = {
     description = "Codex remote-control app server";
@@ -24,16 +27,16 @@
       ripgrep
     ];
     environment = {
-      CODEX_HOME = "/home/rishabh/.codex";
-      HOME = "/home/rishabh";
+      CODEX_HOME = "${cfg.paths.userHome}/.codex";
+      HOME = cfg.paths.userHome;
     };
     serviceConfig = {
       Type = "simple";
       User = "rishabh";
       Group = "users";
-      WorkingDirectory = "/srv/ops";
-      ExecStartPre = "${pkgs.coreutils}/bin/test -x /home/rishabh/.codex/packages/standalone/current/codex";
-      ExecStart = "/home/rishabh/.codex/packages/standalone/current/codex app-server --remote-control --listen unix://";
+      WorkingDirectory = cfg.paths.opsRoot;
+      ExecStartPre = "${pkgs.coreutils}/bin/test -x ${cfg.paths.userHome}/.codex/packages/standalone/current/codex";
+      ExecStart = "${cfg.paths.userHome}/.codex/packages/standalone/current/codex app-server --remote-control --listen unix://";
       Restart = "always";
       RestartSec = "5s";
     };

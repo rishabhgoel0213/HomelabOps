@@ -2,7 +2,6 @@
 
 let
   cfg = config.homelab;
-  sharePath = "/home/rishabh/Remote";
 in
 {
   config = lib.mkIf cfg.samba.enable {
@@ -42,7 +41,7 @@ in
         };
 
         Remote = {
-          "path" = sharePath;
+          "path" = cfg.paths.remoteShare;
           "comment" = "Rishabh remote server files";
           "valid users" = "rishabh";
           "force user" = "rishabh";

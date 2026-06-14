@@ -2,7 +2,10 @@
 set -euo pipefail
 
 repo="${1:-rishabhgoel0213/rishabhgoel0213}"
-source_readme="/srv/ops/documents/github-profile/README.md"
+
+. "${HOMELAB_PATHS_LIB:-/srv/ops/scripts/lib/homelab-paths}"
+
+source_readme="$homelab_github_profile_readme"
 
 if [[ ! -f "$source_readme" ]]; then
   echo "Missing managed README source: $source_readme" >&2

@@ -28,6 +28,54 @@ in
       description = "Stable Tailscale IPv4 address for this host.";
     };
 
+    paths = {
+      userHome = mkOption {
+        type = types.str;
+        default = "/home/rishabh";
+        description = "Primary user's home directory.";
+      };
+      opsRoot = mkOption {
+        type = types.str;
+        default = "/srv/ops";
+        description = "Infrastructure repository root.";
+      };
+      stateRoot = mkOption {
+        type = types.str;
+        default = "/srv/state";
+        description = "Durable service state root.";
+      };
+      secretsFile = mkOption {
+        type = types.path;
+        default = /home/rishabh/.config/homelab/secrets.yaml;
+        description = "Local encrypted SOPS secrets file.";
+      };
+      publicSiteSource = mkOption {
+        type = types.str;
+        default = "/home/rishabh/Projects/public-site";
+        description = "Editable public site source directory.";
+      };
+      publicSiteState = mkOption {
+        type = types.str;
+        default = "/srv/state/public-site";
+        description = "Deployed public site directory served by Caddy.";
+      };
+      resumePdf = mkOption {
+        type = types.str;
+        default = "/home/rishabh/Documents/resume/Resume.pdf";
+        description = "Canonical resume PDF copied into the deployed public site.";
+      };
+      githubProfileReadme = mkOption {
+        type = types.str;
+        default = "/home/rishabh/Documents/github-profile/README.md";
+        description = "Managed source README for the public GitHub profile repository.";
+      };
+      remoteShare = mkOption {
+        type = types.str;
+        default = "/home/rishabh/Remote";
+        description = "User-owned directory exported over SMB.";
+      };
+    };
+
     acme = {
       enable = mkEnableOption "wildcard ACME certificates through Cloudflare DNS";
       email = mkOption {
@@ -49,27 +97,31 @@ in
 
     privateDns.enable = mkEnableOption "CoreDNS wildcard DNS for internal tailnet apps";
 
-    backups = {
-      enable = mkEnableOption "scheduled restic backups";
+    backrest = {
+      enable = mkEnableOption "Backrest private restic web UI";
       repository = mkOption {
         type = types.nullOr types.str;
         default = null;
-        description = "Restic repository, for example an sftp: URL or local path.";
+        description = "Backrest Restic repository, for example an sftp: URL or local path.";
       };
       sshTarget = mkOption {
         type = types.nullOr types.str;
         default = null;
-        description = "Optional SSH target for restic SFTP repositories, for example u123456@u123456.your-storagebox.de.";
+        description = "Optional SSH target for Backrest SFTP repositories, for example u123456@u123456.your-storagebox.de.";
       };
       sshPort = mkOption {
         type = types.port;
         default = 23;
-        description = "SSH port for the restic SFTP command. Hetzner Storage Boxes commonly use port 23.";
+        description = "SSH port for the Backrest SFTP command. Hetzner Storage Boxes commonly use port 23.";
+      };
+      image = mkOption {
+        type = types.str;
+        default = "garethgeorge/backrest@sha256:9c9966b5c285ec791a6b06cb4545fa0247424d05442e12f9558b4322d9f8a15f";
+        description = "Pinned Backrest container image.";
       };
     };
 
     vaultwarden.enable = mkEnableOption "Vaultwarden private password vault";
-    backrest.enable = mkEnableOption "Backrest private restic web UI";
     syncthing.enable = mkEnableOption "Syncthing private file sync";
     samba.enable = mkEnableOption "Private SMB file share";
 
@@ -103,7 +155,6 @@ in
                 type = types.enum [
                   "internal"
                   "public"
-                  "public-protected"
                 ];
                 default = "internal";
                 description = "Which ingress lane serves this route.";

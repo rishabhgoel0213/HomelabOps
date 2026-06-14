@@ -1,27 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-repo="/srv/ops"
 domain="therealrishabh.com"
-secrets_file="$repo/secrets/homelab.yaml"
-age_key_cmd="/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key"
 
-need() {
-  if ! command -v "$1" >/dev/null 2>&1; then
-    echo "Missing required command: $1" >&2
-    exit 1
-  fi
-}
+. "${HOMELAB_SECRETS_LIB:-/srv/ops/scripts/lib/homelab-secrets}"
 
 need curl
 need jq
 need sops
 need sudo
 
-if [[ ! -f "$secrets_file" ]]; then
-  echo "Missing $secrets_file" >&2
-  exit 1
-fi
+require_sops_file
 
 printf "Cloudflare API token: " >&2
 IFS= read -rs token
@@ -80,9 +69,7 @@ updated_json="$tmpdir/homelab.updated.json"
 encrypted_yaml="$tmpdir/homelab.yaml"
 
 echo "Decrypting existing sops file locally..." >&2
-sudo env SOPS_AGE_KEY_CMD="$age_key_cmd" \
-  sops --decrypt --output-type json "$secrets_file" > "$plain_json"
-chmod 600 "$plain_json"
+sops_decrypt_json "$plain_json"
 
 admin_env="CLOUDFLARE_API_TOKEN=$token
 CLOUDFLARE_ACCOUNT_ID=$account_id
@@ -101,21 +88,10 @@ jq \
 chmod 600 "$updated_json"
 
 echo "Re-encrypting $secrets_file..." >&2
-(
-  cd "$repo"
-  sops --encrypt \
-    --filename-override secrets/homelab.yaml \
-    --input-type json \
-    --output-type yaml \
-    "$updated_json"
-) > "$encrypted_yaml"
-chmod 600 "$encrypted_yaml"
-mv "$encrypted_yaml" "$secrets_file"
-chmod 600 "$secrets_file"
+sops_encrypt_json "$updated_json" "$encrypted_yaml"
 
 echo "Checking encrypted file decrypts with the host key..." >&2
-sudo env SOPS_AGE_KEY_CMD="$age_key_cmd" \
-  sops --decrypt "$secrets_file" >/dev/null
+sops_verify
 
 echo "Stored Cloudflare credentials in encrypted sops file." >&2
 echo "Zone ID: $zone_id" >&2

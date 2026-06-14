@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [[ $# -lt 3 || $# -gt 4 ]]; then
-  echo "usage: scripts/add-route NAME internal|public|public-protected UPSTREAM [HOST]" >&2
+  echo "usage: scripts/add-route NAME internal|public UPSTREAM [HOST]" >&2
   exit 2
 fi
 
@@ -12,9 +12,9 @@ upstream="$3"
 host="${4:-$name}"
 
 case "$visibility" in
-  internal|public|public-protected) ;;
+  internal|public) ;;
   *)
-    echo "visibility must be internal, public, or public-protected" >&2
+    echo "visibility must be internal or public" >&2
     exit 2
     ;;
 esac

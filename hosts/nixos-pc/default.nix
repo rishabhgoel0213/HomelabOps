@@ -13,7 +13,6 @@
     ../../modules/core/filesystem.nix
     ../../modules/core/gpu.nix
     ../../modules/core/secrets.nix
-    ../../modules/core/backups.nix
     ../../modules/core/dns.nix
     ../../modules/core/cloudflare.nix
     ../../modules/core/tailscale-api.nix
@@ -47,18 +46,14 @@
 
     privateDns.enable = true;
 
-    backups = {
-      # Backrest owns backup scheduling, retention, and monitoring. Keep the
-      # Hetzner repository settings here for shared secret/material setup, but
-      # leave the standalone NixOS restic timer disabled.
-      enable = false;
+    backrest = {
+      enable = true;
       repository = "sftp:u614006@u614006.your-storagebox.de:/home/restic/nixos-pc";
       sshTarget = "u614006@u614006.your-storagebox.de";
       sshPort = 23;
     };
 
     vaultwarden.enable = true;
-    backrest.enable = true;
     syncthing.enable = true;
     samba.enable = true;
   };

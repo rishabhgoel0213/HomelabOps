@@ -6,11 +6,12 @@ in
 {
   config = lib.mkIf cfg.secrets.enable {
     sops = {
-      defaultSopsFile = /srv/ops/secrets/homelab.yaml;
+      defaultSopsFile = cfg.paths.secretsFile;
       validateSopsFiles = false;
       age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
       secrets = {
+        "network-manager.env" = { };
         "cloudflare-admin.env" = {
           owner = "rishabh";
           group = "users";
@@ -30,9 +31,8 @@ in
           mode = "0400";
         };
         "restic-password" = { };
-        "restic.env" = { };
       }
-      // lib.optionalAttrs (cfg.backups.sshTarget != null) {
+      // lib.optionalAttrs (cfg.backrest.sshTarget != null) {
         "restic-ssh-key" = {
           owner = "root";
           group = "root";
