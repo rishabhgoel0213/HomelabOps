@@ -1,25 +1,21 @@
 # Restore Runbook
 
-## List Snapshots
+## Backrest UI
 
-```bash
-sudo restic snapshots
-```
+Backrest owns this repository. Prefer browsing snapshots and restoring files
+from:
 
-## Restore To A Temporary Directory
-
-```bash
-sudo mkdir -p /srv/restore-test
-sudo restic restore latest --target /srv/restore-test
+```text
+https://backups.internal.therealrishabh.com
 ```
 
 ## Restore A Service State Directory
 
-Stop the service, restore into a temporary directory, inspect it, then replace the state directory:
+Use Backrest to restore into a temporary directory first, inspect the restored
+files, then stop the affected service and replace its live state directory.
 
 ```bash
 sudo systemctl stop vaultwarden.service
-sudo restic restore latest --target /srv/restore-test --include /srv/state/vaultwarden
 ```
 
 Do not overwrite live state without inspecting the restored files first.

@@ -56,6 +56,16 @@ in
         default = null;
         description = "Restic repository, for example an sftp: URL or local path.";
       };
+      sshTarget = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "Optional SSH target for restic SFTP repositories, for example u123456@u123456.your-storagebox.de.";
+      };
+      sshPort = mkOption {
+        type = types.port;
+        default = 23;
+        description = "SSH port for the restic SFTP command. Hetzner Storage Boxes commonly use port 23.";
+      };
     };
 
     vaultwarden.enable = mkEnableOption "Vaultwarden private password vault";

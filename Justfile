@@ -39,7 +39,7 @@ status:
     systemctl --no-pager status docker.service || true
 
 backup-now:
-    sudo systemctl start restic-backups-homelab.service
+    @echo "Backrest owns backup runs now. Open https://backups.internal.therealrishabh.com and run the plan from the UI."
 
 secrets-edit:
     status=0; sudo env SOPS_AGE_KEY_CMD='/run/current-system/sw/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops secrets/homelab.yaml || status=$?; if [ "$status" -ne 0 ] && [ "$status" -ne 200 ]; then exit "$status"; fi

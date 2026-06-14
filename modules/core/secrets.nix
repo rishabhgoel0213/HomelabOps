@@ -26,6 +26,18 @@ in
         "vaultwarden.env" = { };
         "restic-password" = { };
         "restic.env" = { };
+      }
+      // lib.optionalAttrs (cfg.backups.sshTarget != null) {
+        "restic-ssh-key" = {
+          owner = "root";
+          group = "root";
+          mode = "0400";
+        };
+        "restic-known-hosts" = {
+          owner = "root";
+          group = "root";
+          mode = "0444";
+        };
       };
     };
   };

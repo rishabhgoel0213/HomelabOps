@@ -46,8 +46,13 @@
     privateDns.enable = true;
 
     backups = {
+      # Backrest owns backup scheduling, retention, and monitoring. Keep the
+      # Hetzner repository settings here for shared secret/material setup, but
+      # leave the standalone NixOS restic timer disabled.
       enable = false;
-      repository = null;
+      repository = "sftp:u614006@u614006.your-storagebox.de:/home/restic/nixos-pc";
+      sshTarget = "u614006@u614006.your-storagebox.de";
+      sshPort = 23;
     };
 
     vaultwarden.enable = true;

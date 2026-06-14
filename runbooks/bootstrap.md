@@ -64,6 +64,7 @@ The file must contain:
 - `vaultwarden.env`
 - `restic-password`
 - `restic.env`
+- `restic-ssh-key` and `restic-known-hosts` if using Restic over SSH/SFTP
 
 ## 5. Enable Services
 
@@ -86,8 +87,12 @@ homelab = {
   backrest.enable = true;
 
   backups = {
-    enable = true;
+    # Backrest owns backup schedules; this disables the standalone NixOS
+    # restic timer while keeping shared repository/SSH settings available.
+    enable = false;
     repository = "sftp:u123456@u123456.your-storagebox.de:/home/homelab";
+    sshTarget = "u123456@u123456.your-storagebox.de";
+    sshPort = 23;
   };
 };
 ```
