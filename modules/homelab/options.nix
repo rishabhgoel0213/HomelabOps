@@ -71,6 +71,7 @@ in
     vaultwarden.enable = mkEnableOption "Vaultwarden private password vault";
     backrest.enable = mkEnableOption "Backrest private restic web UI";
     syncthing.enable = mkEnableOption "Syncthing private file sync";
+    samba.enable = mkEnableOption "Private SMB file share";
 
     routes = mkOption {
       default = { };

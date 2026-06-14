@@ -24,6 +24,11 @@ in
           mode = "0400";
         };
         "vaultwarden.env" = { };
+        "samba-password" = {
+          owner = "root";
+          group = "root";
+          mode = "0400";
+        };
         "restic-password" = { };
         "restic.env" = { };
       }

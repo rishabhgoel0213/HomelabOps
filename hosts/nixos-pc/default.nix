@@ -22,6 +22,7 @@
     ../../modules/services/backrest.nix
     ../../modules/services/public-site.nix
     ../../modules/services/syncthing.nix
+    ../../modules/services/samba.nix
 
     ../../routes
   ];
@@ -59,6 +60,7 @@
     vaultwarden.enable = true;
     backrest.enable = true;
     syncthing.enable = true;
+    samba.enable = true;
   };
 
   system.stateVersion = "26.05";
