@@ -24,6 +24,16 @@ in
           group = "users";
           mode = "0400";
         };
+        "codex-auth.json" = {
+          owner = "rishabh";
+          group = "users";
+          mode = "0400";
+        };
+        "codex-credentials.json" = {
+          owner = "rishabh";
+          group = "users";
+          mode = "0400";
+        };
         "vaultwarden.env" = { };
         "samba-password" = {
           owner = "root";

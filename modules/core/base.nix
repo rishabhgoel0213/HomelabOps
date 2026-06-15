@@ -93,7 +93,6 @@ in
     bubblewrap
     caddy
     cloudflared
-    codex
     curl
     direnv
     fzf

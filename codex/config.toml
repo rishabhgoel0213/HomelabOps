@@ -1,0 +1,29 @@
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+
+[projects."/home/rishabh"]
+trust_level = "trusted"
+
+[projects."/srv/ops"]
+trust_level = "trusted"
+
+[mcp_servers.cloudflare-api]
+url = "https://mcp.cloudflare.com/mcp"
+
+[plugins."canva@openai-curated"]
+enabled = true
+
+[plugins."cloudflare@openai-curated"]
+enabled = true
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."gmail@openai-curated"]
+enabled = true
+
+[plugins."google-calendar@openai-curated"]
+enabled = true
+
+[plugins."google-drive@openai-curated"]
+enabled = true

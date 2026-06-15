@@ -22,3 +22,6 @@ homelab_public_site_state="${HOMELAB_PUBLIC_SITE_STATE:-$homelab_public_site_sta
 homelab_resume_pdf="${HOMELAB_RESUME_PDF:-$homelab_resume_pdf}"
 homelab_github_profile_readme="${HOMELAB_GITHUB_PROFILE_README:-$homelab_github_profile_readme}"
 homelab_remote_share="${HOMELAB_REMOTE_SHARE:-$homelab_remote_share}"
+homelab_codex_home="${HOMELAB_CODEX_HOME:-${homelab_codex_home:-$homelab_state_root/codex}}"
+homelab_codex_config_source="${HOMELAB_CODEX_CONFIG_SOURCE:-${homelab_codex_config_source:-$homelab_ops_root/codex/config.toml}}"
+homelab_codex_plugin_root="${HOMELAB_CODEX_PLUGIN_ROOT:-${homelab_codex_plugin_root:-$homelab_ops_root/codex/plugins}}"

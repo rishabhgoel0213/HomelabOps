@@ -44,6 +44,21 @@ backup-now:
 public-site-deploy:
     scripts/public-site-deploy
 
+codex-bootstrap:
+    scripts/codex-bootstrap
+
+codex-update:
+    nix shell --inputs-from . nixpkgs#git nixpkgs#jq nixpkgs#perl --command scripts/update-codex
+
+codex-store-auth:
+    scripts/codex-store-auth
+
+codex-migrate-state:
+    scripts/codex-migrate-state
+
+codex-prune-user-install:
+    scripts/codex-prune-user-install
+
 secrets-edit:
     scripts/secrets-edit
 

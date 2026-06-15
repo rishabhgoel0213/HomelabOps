@@ -18,6 +18,9 @@ in
     ${shellVar "homelab_resume_pdf" cfg.paths.resumePdf}
     ${shellVar "homelab_github_profile_readme" cfg.paths.githubProfileReadme}
     ${shellVar "homelab_remote_share" cfg.paths.remoteShare}
+    ${shellVar "homelab_codex_home" cfg.paths.codexHome}
+    ${shellVar "homelab_codex_config_source" cfg.paths.codexConfigSource}
+    ${shellVar "homelab_codex_plugin_root" cfg.paths.codexPluginRoot}
   '';
 
   systemd.tmpfiles.rules = [
@@ -33,5 +36,12 @@ in
     "d ${cfg.paths.publicSiteSource} 0755 rishabh users - -"
     "d ${cfg.paths.userHome}/Projects/templates 0755 rishabh users - -"
     "d ${cfg.paths.remoteShare} 0755 rishabh users - -"
+    "d ${cfg.paths.codexHome} 0700 rishabh users - -"
+    "d ${cfg.paths.codexHome}/cache 0700 rishabh users - -"
+    "d ${cfg.paths.codexHome}/log 0700 rishabh users - -"
+    "d ${cfg.paths.codexHome}/plugins 0700 rishabh users - -"
+    "d ${cfg.paths.codexHome}/tmp 0700 rishabh users - -"
+    "d ${cfg.paths.opsRoot}/codex 0755 rishabh users - -"
+    "d ${cfg.paths.codexPluginRoot} 0755 rishabh users - -"
   ];
 }

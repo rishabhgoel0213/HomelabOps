@@ -41,6 +41,7 @@ See `runbooks/bootstrap.md` for the detailed first setup.
 See `runbooks/cloudflare.md` for Cloudflare admin CLI setup.
 See `runbooks/backups.md` for Restic backups to a Hetzner Storage Box.
 See `runbooks/bitwarden-sops.md` for selectively promoting Vaultwarden secrets into sops.
+See `runbooks/codex.md` for the managed Codex server integration.
 See `runbooks/syncthing.md` for private Finder-friendly file sync setup.
 
 `/srv/ops` should contain stateless infrastructure and operational knowledge.

@@ -74,6 +74,21 @@ in
         default = "/home/rishabh/Remote";
         description = "User-owned directory exported over SMB.";
       };
+      codexHome = mkOption {
+        type = types.str;
+        default = "/srv/state/codex";
+        description = "Managed Codex runtime home.";
+      };
+      codexConfigSource = mkOption {
+        type = types.str;
+        default = "/srv/ops/codex/config.toml";
+        description = "Default Codex config source managed by the ops repository.";
+      };
+      codexPluginRoot = mkOption {
+        type = types.str;
+        default = "/srv/ops/codex/plugins";
+        description = "Repo-local Codex plugin source root.";
+      };
     };
 
     acme = {

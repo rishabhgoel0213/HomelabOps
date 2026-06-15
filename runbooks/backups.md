@@ -46,15 +46,17 @@ Suggested excludes:
 
 ```text
 /backup/home/rishabh/.cache
-/backup/home/rishabh/.codex/.tmp
-/backup/home/rishabh/.codex/cache
-/backup/home/rishabh/.codex/log
-/backup/home/rishabh/.codex/tmp
-/backup/home/rishabh/.codex/app-server-daemon/*.log
 /backup/home/rishabh/.local/share/Trash
 /backup/srv/state/backrest
 /backup/srv/state/backrest/cache
 /backup/srv/state/backrest/tmp
+/backup/srv/state/codex/.tmp
+/backup/srv/state/codex/cache
+/backup/srv/state/codex/log
+/backup/srv/state/codex/tmp
+/backup/srv/state/codex/auth.json
+/backup/srv/state/codex/.credentials.json
+/backup/srv/state/codex/app-server-daemon/*.log
 /backup/srv/state/syncthing/index-v2
 ```
 

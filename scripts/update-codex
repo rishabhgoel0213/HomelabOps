@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo="${CODEX_OPS_ROOT:-/srv/ops}"
+host="${HOST:-nixos-pc}"
+package_file="${CODEX_PACKAGE_FILE:-$repo/packages/codex.nix}"
+target="${1:-latest}"
+
+need() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Missing required command: $1" >&2
+    exit 1
+  fi
+}
+
+need git
+need jq
+need nix
+need perl
+
+if [[ ! -f "$package_file" ]]; then
+  echo "Missing package file: $package_file" >&2
+  exit 1
+fi
+
+if [[ "$target" == "latest" ]]; then
+  tag="$(
+    git ls-remote --tags --refs https://github.com/openai/codex.git 'refs/tags/rust-v*' \
+      | awk -F/ '{print $NF}' \
+      | sort -V \
+      | tail -1
+  )"
+else
+  tag="${target#refs/tags/}"
+  if [[ "$tag" != rust-v* ]]; then
+    tag="rust-v$tag"
+  fi
+fi
+
+if [[ -z "${tag:-}" ]]; then
+  echo "Could not determine Codex tag." >&2
+  exit 1
+fi
+
+version="${tag#rust-v}"
+src_url="https://github.com/openai/codex/archive/refs/tags/$tag.tar.gz"
+
+echo "Updating Codex package to $tag" >&2
+src_hash="$(nix store prefetch-file --json --unpack "$src_url" | jq -r .hash)"
+
+perl -0pi -e \
+  "s/version = \"[^\"]+\";/version = \"$version\";/;
+   s/srcHash = \"sha256-[^\"]+\";/srcHash = \"$src_hash\";/;
+   s/cargoHash = (?:\"sha256-[^\"]+\"|lib\\.fakeHash);/cargoHash = lib.fakeHash;/" \
+  "$package_file"
+
+set +e
+build_output="$(
+  cd "$repo" && nix build --impure --no-link ".#nixosConfigurations.$host.config.system.build.toplevel" 2>&1
+)"
+build_status=$?
+set -e
+
+if [[ "$build_status" -eq 0 ]]; then
+  echo "Build unexpectedly succeeded with lib.fakeHash; leaving package file as-is." >&2
+  exit 1
+fi
+
+cargo_hash="$(
+  printf '%s\n' "$build_output" \
+    | sed -nE 's/.*got:[[:space:]]*(sha256-[A-Za-z0-9+\/=]+).*/\1/p' \
+    | tail -1
+)"
+
+if [[ -z "$cargo_hash" ]]; then
+  printf '%s\n' "$build_output" >&2
+  echo "Could not extract Cargo vendor hash from Nix output." >&2
+  exit 1
+fi
+
+perl -0pi -e \
+  "s/cargoHash = (?:\"sha256-[^\"]+\"|lib\\.fakeHash);/cargoHash = \"$cargo_hash\";/" \
+  "$package_file"
+
+(
+  cd "$repo"
+  nix build --impure --no-link ".#nixosConfigurations.$host.config.system.build.toplevel"
+)
+
+echo "Codex package updated to $version." >&2
