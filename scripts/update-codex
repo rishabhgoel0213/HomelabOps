@@ -27,6 +27,7 @@ if [[ "$target" == "latest" ]]; then
   tag="$(
     git ls-remote --tags --refs https://github.com/openai/codex.git 'refs/tags/rust-v*' \
       | awk -F/ '{print $NF}' \
+      | grep -E '^rust-v[0-9]+\.[0-9]+\.[0-9]+$' \
       | sort -V \
       | tail -1
   )"
@@ -44,14 +45,22 @@ fi
 
 version="${tag#rust-v}"
 src_url="https://github.com/openai/codex/archive/refs/tags/$tag.tar.gz"
+current_version="$(
+  perl -ne 'if (/version = "([^"]+)";/) { print $1; exit }' "$package_file"
+)"
+
+if [[ "${CODEX_UPDATE_FORCE:-0}" != "1" && "$current_version" == "$version" ]] && ! grep -q 'lib\.fakeHash' "$package_file"; then
+  echo "Codex package already at $version." >&2
+  exit 0
+fi
 
 echo "Updating Codex package to $tag" >&2
 src_hash="$(nix store prefetch-file --json --unpack "$src_url" | jq -r .hash)"
 
 perl -0pi -e \
-  "s/version = \"[^\"]+\";/version = \"$version\";/;
-   s/srcHash = \"sha256-[^\"]+\";/srcHash = \"$src_hash\";/;
-   s/cargoHash = (?:\"sha256-[^\"]+\"|lib\\.fakeHash);/cargoHash = lib.fakeHash;/" \
+  "s{version = \"[^\"]+\";}{version = \"$version\";};
+   s{srcHash = \"sha256-[^\"]+\";}{srcHash = \"$src_hash\";};
+   s{cargoHash = (?:\"sha256-[^\"]+\"|lib\\.fakeHash);}{cargoHash = lib.fakeHash;}" \
   "$package_file"
 
 set +e
@@ -79,7 +88,7 @@ if [[ -z "$cargo_hash" ]]; then
 fi
 
 perl -0pi -e \
-  "s/cargoHash = (?:\"sha256-[^\"]+\"|lib\\.fakeHash);/cargoHash = \"$cargo_hash\";/" \
+  "s{cargoHash = (?:\"sha256-[^\"]+\"|lib\\.fakeHash);}{cargoHash = \"$cargo_hash\";}" \
   "$package_file"
 
 (

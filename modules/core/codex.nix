@@ -60,6 +60,7 @@ in
       "tailscaled.service"
     ] ++ lib.optional cfg.secrets.enable "sops-nix.service";
     path = with pkgs; [
+      bash
       bubblewrap
       coreutils
       git
@@ -71,6 +72,7 @@ in
     environment = {
       CODEX_HOME = codexHome;
       HOME = cfg.paths.userHome;
+      SHELL = "${pkgs.bash}/bin/bash";
     };
     serviceConfig = {
       Type = "simple";
@@ -83,6 +85,45 @@ in
       RestartSec = "5s";
     } // lib.optionalAttrs cfg.secrets.enable {
       EnvironmentFile = config.sops.secrets."codex-beeper.env".path;
+    };
+  };
+
+  systemd.services.codex-auto-update = {
+    description = "Automatically update the managed Codex package";
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    path = with pkgs; [
+      bash
+      coreutils
+      gawk
+      git
+      gnugrep
+      gnused
+      jq
+      nix
+      nixos-rebuild
+      perl
+      systemd
+      util-linux
+    ];
+    environment = {
+      CODEX_OPS_ROOT = cfg.paths.opsRoot;
+      HOST = config.networking.hostName;
+    };
+    serviceConfig = {
+      Type = "oneshot";
+      WorkingDirectory = cfg.paths.opsRoot;
+      ExecStart = "${cfg.paths.opsRoot}/scripts/codex-auto-update";
+    };
+  };
+
+  systemd.timers.codex-auto-update = {
+    description = "Daily managed Codex package update";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 04:30:00";
+      Persistent = true;
+      Unit = "codex-auto-update.service";
     };
   };
 }

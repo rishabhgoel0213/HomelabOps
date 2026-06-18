@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo="${CODEX_OPS_ROOT:-/srv/ops}"
+host="${HOST:-nixos-pc}"
+target="${1:-latest}"
+package_file="${CODEX_PACKAGE_FILE:-$repo/packages/codex.nix}"
+lock_file="${CODEX_UPDATE_LOCK_FILE:-/tmp/homelab-codex-update.lock}"
+
+exec 9>"$lock_file"
+if ! flock -n 9; then
+  echo "Another Codex update is already running." >&2
+  exit 0
+fi
+
+if [[ ! -f "$package_file" ]]; then
+  echo "Missing package file: $package_file" >&2
+  exit 1
+fi
+
+before_hash="$(sha256sum "$package_file" | awk '{print $1}')"
+before_version="$(perl -ne 'if (/version = "([^"]+)";/) { print $1; exit }' "$package_file")"
+
+"$repo/scripts/update-codex" "$target"
+
+after_hash="$(sha256sum "$package_file" | awk '{print $1}')"
+after_version="$(perl -ne 'if (/version = "([^"]+)";/) { print $1; exit }' "$package_file")"
+
+if [[ "$before_hash" == "$after_hash" ]]; then
+  echo "Codex is already current at $after_version." >&2
+  exit 0
+fi
+
+echo "Codex changed from $before_version to $after_version; switching NixOS generation." >&2
+nixos-rebuild switch --impure --flake "$repo#$host"
+systemctl restart codex-remote-control.service
+echo "Codex auto-update applied $after_version." >&2

@@ -50,6 +50,9 @@ codex-bootstrap:
 codex-update:
     nix shell --inputs-from . nixpkgs#git nixpkgs#jq nixpkgs#perl --command scripts/update-codex
 
+codex-auto-update:
+    sudo scripts/codex-auto-update
+
 codex-store-auth:
     scripts/codex-store-auth
 

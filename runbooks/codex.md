@@ -21,6 +21,7 @@ just codex-store-auth
 just codex-migrate-state
 just codex-bootstrap
 just codex-update
+just codex-auto-update
 just codex-prune-user-install
 ```
 
@@ -34,8 +35,12 @@ the Cloudflare MCP server, and installs enabled plugins declared in
 `/srv/ops/codex/config.toml`.
 
 `codex-update` updates the repo-owned Codex package override in
-`/srv/ops/packages/codex.nix` to the latest upstream `rust-v*` tag and refreshes
-the fixed-output source and Cargo vendor hashes.
+`/srv/ops/packages/codex.nix` to the latest stable upstream `rust-v*` tag and
+refreshes the fixed-output source and Cargo vendor hashes.
+
+`codex-auto-update` runs the same package update, switches the NixOS generation
+only when the package file changes, and restarts `codex-remote-control.service`.
+The systemd timer `codex-auto-update.timer` runs it every morning at 04:30.
 
 `codex-prune-user-install` removes the legacy `~/.local/bin/codex` shim when it
 points into `~/.codex`. If no running process still has files open in
