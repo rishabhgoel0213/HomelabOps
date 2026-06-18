@@ -16,6 +16,12 @@ in
             match ^(.+\.)?${cfg.internalSubdomain}\.${cfg.domain}\.$
             answer "{{ .Name }} 60 IN A ${cfg.tailnetIp}"
           }
+          ${lib.optionalString (cfg.tailnetIpv6 != null) ''
+          template IN AAAA {
+            match ^(.+\.)?${cfg.internalSubdomain}\.${cfg.domain}\.$
+            answer "{{ .Name }} 60 IN AAAA ${cfg.tailnetIpv6}"
+          }
+          ''}
         }
 
         .:53 {

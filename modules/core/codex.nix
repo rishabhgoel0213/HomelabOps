@@ -81,6 +81,8 @@ in
       ExecStart = "${codexBin} app-server --remote-control --listen unix://";
       Restart = "always";
       RestartSec = "5s";
+    } // lib.optionalAttrs cfg.secrets.enable {
+      EnvironmentFile = config.sops.secrets."codex-beeper.env".path;
     };
   };
 }

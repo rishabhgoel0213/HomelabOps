@@ -28,6 +28,12 @@ in
       description = "Stable Tailscale IPv4 address for this host.";
     };
 
+    tailnetIpv6 = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Stable Tailscale IPv6 address for this host.";
+    };
+
     paths = {
       userHome = mkOption {
         type = types.str;

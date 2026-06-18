@@ -31,6 +31,7 @@
     internalSubdomain = "internal";
 
     tailnetIp = "100.73.159.103";
+    tailnetIpv6 = "fd7a:115c:a1e0::6b32:9f68";
 
     acme = {
       enable = true;
