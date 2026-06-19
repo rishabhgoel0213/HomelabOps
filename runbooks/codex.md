@@ -11,8 +11,9 @@ The systemd service uses the Nix-provided `codex` package and sets
 `CODEX_HOME=/srv/state/codex`.
 
 Codex-owned implementation caches can include paths such as
-`/srv/state/codex/.tmp/plugins/.agents`. That is acceptable as runtime state;
-the ops repository should not carry a `.agents` directory.
+`/srv/state/codex/.tmp/plugins/.agents`. That is acceptable as runtime state.
+The ops repository carries only the local plugin marketplace source at
+`/srv/ops/codex/.agents/plugins/marketplace.json`.
 
 Useful commands:
 

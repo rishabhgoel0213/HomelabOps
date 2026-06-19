@@ -8,6 +8,8 @@ integration.
 - `AGENTS.md` is the global Codex guidance seeded into `/srv/state/codex`.
   It points server-aware chats at `/srv/workspace`.
 - `plugins/` is reserved for local plugin source owned by this repository.
+- `.agents/plugins/marketplace.json` is the repo-local Codex plugin marketplace
+  used by bootstrap for Homelab-owned plugins.
 
 Live Codex state, sessions, caches, auth materialization, and installed plugin
 artifacts belong under `/srv/state/codex`.

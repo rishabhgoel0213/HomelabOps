@@ -2,5 +2,6 @@
 
 Put repo-owned Codex plugin source here.
 
-This repository keeps local plugin source visible here. Remote curated plugins
-are declared as enabled plugin blocks in `../config.toml`.
+This repository keeps local plugin source visible here. Local plugin entries are
+declared in `../.agents/plugins/marketplace.json`; enabled plugin blocks live in
+`../config.toml`.

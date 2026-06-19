@@ -9,6 +9,7 @@
 
     ../../modules/core/base.nix
     ../../modules/core/codex.nix
+    ../../modules/core/computer-use.nix
     ../../modules/core/containers.nix
     ../../modules/core/filesystem.nix
     ../../modules/core/gpu.nix

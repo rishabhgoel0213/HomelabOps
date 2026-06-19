@@ -19,6 +19,8 @@
 - `modules/core/codex.nix` manages Codex package, runtime home, service, and
   auto-update timer.
 - `modules/core/cloudflare.nix` provides `cfctl` and Cloudflare Tunnel.
+- `modules/core/computer-use.nix` provides temporary VNC/noVNC desktops for
+  Codex Computer Use.
 - `modules/core/dns.nix` provides CoreDNS for internal wildcard DNS.
 - `modules/core/tailscale-api.nix` provides `tsctl`.
 - `modules/core/secrets.nix` maps SOPS keys to `/run/secrets`.
@@ -79,10 +81,10 @@ just logs caddy.service
 - `runbooks/backups.md` - Backrest and Restic plans.
 - `runbooks/restore.md` - restore discipline.
 - `runbooks/codex.md` - managed Codex service.
+- `runbooks/computer-use.md` - temporary Codex-controlled desktops.
 - `runbooks/beeper.md` - Beeper Desktop MCP over the tailnet.
 - `runbooks/syncthing.md` - private file sync.
 - `runbooks/smb.md` - Finder SMB share.
 - `runbooks/bitwarden-sops.md` - promote selected vault fields into SOPS.
 - `runbooks/add-service.md` - route-based service exposure.
 - `runbooks/workspace.md` - shared Codex workspace.
-

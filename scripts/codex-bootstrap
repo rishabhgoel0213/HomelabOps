@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=/srv/ops/scripts/lib/homelab-paths
 . "${HOMELAB_PATHS_LIB:-/srv/ops/scripts/lib/homelab-paths}"
 
 codex_cmd="${CODEX_CMD:-/run/current-system/sw/bin/codex}"
@@ -52,6 +53,17 @@ fi
 
 export CODEX_HOME="$homelab_codex_home"
 export HOME="$homelab_user_home"
+
+homelab_codex_source_root="${homelab_codex_config_source%/*}"
+homelab_codex_marketplace_file="$homelab_codex_source_root/.agents/plugins/marketplace.json"
+if [[ -f "$homelab_codex_marketplace_file" ]]; then
+  local_marketplace_name="$(awk -F\" '/^[[:space:]]*"name"[[:space:]]*:/ { print $4; exit }' "$homelab_codex_marketplace_file")"
+  if [[ -n "$local_marketplace_name" ]] \
+    && ! "$codex_cmd" plugin marketplace list --json | grep -q "\"name\": \"$local_marketplace_name\""; then
+    echo "Registering Codex plugin marketplace: $local_marketplace_name" >&2
+    "$codex_cmd" plugin marketplace add "$homelab_codex_source_root" >/dev/null
+  fi
+fi
 
 if ! "$codex_cmd" mcp get cloudflare-api >/dev/null 2>&1; then
   "$codex_cmd" mcp add cloudflare-api --url https://mcp.cloudflare.com/mcp

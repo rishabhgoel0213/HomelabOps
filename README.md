@@ -43,6 +43,7 @@ See `runbooks/cloudflare.md` for Cloudflare admin CLI setup.
 See `runbooks/backups.md` for Restic backups to a Hetzner Storage Box.
 See `runbooks/bitwarden-sops.md` for selectively promoting Vaultwarden secrets into sops.
 See `runbooks/codex.md` for the managed Codex server integration.
+See `runbooks/computer-use.md` for temporary Codex-controlled desktops.
 See `runbooks/workspace.md` for the shared Codex workspace.
 See `runbooks/beeper.md` for exposing Beeper Desktop MCP to Codex over the tailnet.
 See `runbooks/syncthing.md` for private Finder-friendly file sync setup.

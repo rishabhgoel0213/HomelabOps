@@ -37,3 +37,6 @@ enabled = true
 
 [plugins."google-drive@openai-curated"]
 enabled = true
+
+[plugins."open-computer-use@homelab-local"]
+enabled = true
