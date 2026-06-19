@@ -62,6 +62,9 @@ codex-migrate-state:
 codex-prune-user-install:
     scripts/codex-prune-user-install
 
+workspace-sync:
+    scripts/workspace-sync
+
 secrets-edit:
     scripts/secrets-edit
 

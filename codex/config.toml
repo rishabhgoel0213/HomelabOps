@@ -1,10 +1,16 @@
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 
+[features]
+memories = true
+
 [projects."/home/rishabh"]
 trust_level = "trusted"
 
 [projects."/srv/ops"]
+trust_level = "trusted"
+
+[projects."/srv/workspace"]
 trust_level = "trusted"
 
 [mcp_servers.cloudflare-api]

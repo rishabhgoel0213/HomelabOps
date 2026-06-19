@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.homelab;
@@ -24,6 +29,11 @@ let
       install -m 0600 -o rishabh -g users \
         ${lib.escapeShellArg cfg.paths.codexConfigSource} \
         ${lib.escapeShellArg "${codexHome}/config.toml"}
+    fi
+    if [[ -r ${lib.escapeShellArg cfg.paths.codexAgentsSource} ]]; then
+      install -m 0600 -o rishabh -g users \
+        ${lib.escapeShellArg cfg.paths.codexAgentsSource} \
+        ${lib.escapeShellArg "${codexHome}/AGENTS.md"}
     fi
 
     ${lib.optionalString cfg.secrets.enable ''
@@ -58,7 +68,8 @@ in
     after = [
       "network-online.target"
       "tailscaled.service"
-    ] ++ lib.optional cfg.secrets.enable "sops-nix.service";
+    ]
+    ++ lib.optional cfg.secrets.enable "sops-nix.service";
     path = with pkgs; [
       bash
       bubblewrap
@@ -83,7 +94,8 @@ in
       ExecStart = "${codexBin} app-server --remote-control --listen unix://";
       Restart = "always";
       RestartSec = "5s";
-    } // lib.optionalAttrs cfg.secrets.enable {
+    }
+    // lib.optionalAttrs cfg.secrets.enable {
       EnvironmentFile = config.sops.secrets."codex-beeper.env".path;
     };
   };

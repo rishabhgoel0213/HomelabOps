@@ -1,0 +1,8 @@
+/repos/
+/scratch/
+/tmp/
+/.direnv/
+/result
+/result-*
+/.envrc
+

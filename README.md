@@ -25,6 +25,7 @@ just route-add demo public http://127.0.0.1:3000
 just route-add vault internal http://127.0.0.1:8222
 just cloudflare-store-token
 just tailscale-store-oauth
+just workspace-sync
 just public-site-deploy
 just github-profile-sync
 just rollback
@@ -42,6 +43,7 @@ See `runbooks/cloudflare.md` for Cloudflare admin CLI setup.
 See `runbooks/backups.md` for Restic backups to a Hetzner Storage Box.
 See `runbooks/bitwarden-sops.md` for selectively promoting Vaultwarden secrets into sops.
 See `runbooks/codex.md` for the managed Codex server integration.
+See `runbooks/workspace.md` for the shared Codex workspace.
 See `runbooks/beeper.md` for exposing Beeper Desktop MCP to Codex over the tailnet.
 See `runbooks/syncthing.md` for private Finder-friendly file sync setup.
 

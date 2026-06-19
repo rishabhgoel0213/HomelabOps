@@ -5,6 +5,8 @@ integration.
 
 - `config.toml` is the Codex config seeded into `/srv/state/codex`; enabled
   plugin blocks in this file are installed during bootstrap.
+- `AGENTS.md` is the global Codex guidance seeded into `/srv/state/codex`.
+  It points server-aware chats at `/srv/workspace`.
 - `plugins/` is reserved for local plugin source owned by this repository.
 
 Live Codex state, sessions, caches, auth materialization, and installed plugin

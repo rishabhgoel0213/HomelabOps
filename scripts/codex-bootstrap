@@ -33,6 +33,11 @@ if [[ -f "$homelab_codex_config_source" ]]; then
     "$homelab_codex_config_source" \
     "$homelab_codex_home/config.toml"
 fi
+if [[ -f "$homelab_codex_agents_source" ]]; then
+  sudo install -m 0600 -o "$homelab_user" -g "$homelab_group" \
+    "$homelab_codex_agents_source" \
+    "$homelab_codex_home/AGENTS.md"
+fi
 
 if [[ -r /run/secrets/codex-auth.json ]]; then
   sudo install -m 0600 -o "$homelab_user" -g "$homelab_group" \

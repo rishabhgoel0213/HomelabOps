@@ -50,6 +50,16 @@ in
         default = "/srv/state";
         description = "Durable service state root.";
       };
+      workspaceRoot = mkOption {
+        type = types.str;
+        default = "/srv/workspace";
+        description = "Shared Codex workspace root for ad hoc projects and server-aware chats.";
+      };
+      workspaceSource = mkOption {
+        type = types.str;
+        default = "/srv/ops/workspace";
+        description = "Ops-owned scaffold copied into the shared Codex workspace.";
+      };
       secretsFile = mkOption {
         type = types.path;
         default = /home/rishabh/.config/homelab/secrets.yaml;
@@ -89,6 +99,11 @@ in
         type = types.str;
         default = "/srv/ops/codex/config.toml";
         description = "Default Codex config source managed by the ops repository.";
+      };
+      codexAgentsSource = mkOption {
+        type = types.str;
+        default = "/srv/ops/codex/AGENTS.md";
+        description = "Global Codex guidance source managed by the ops repository.";
       };
       codexPluginRoot = mkOption {
         type = types.str;
