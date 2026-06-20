@@ -19,8 +19,8 @@
 - `modules/core/codex.nix` manages Codex package, runtime home, service, and
   auto-update timer.
 - `modules/core/cloudflare.nix` provides `cfctl` and Cloudflare Tunnel.
-- `modules/core/computer-use.nix` provides temporary VNC/noVNC desktops for
-  Codex Computer Use.
+- `modules/core/computer-use.nix` provides temporary VNC/noVNC desktops and the
+  internal takeover hub for Codex Computer Use.
 - `modules/core/dns.nix` provides CoreDNS for internal wildcard DNS.
 - `modules/core/tailscale-api.nix` provides `tsctl`.
 - `modules/core/secrets.nix` maps SOPS keys to `/run/secrets`.

@@ -37,6 +37,27 @@ The important rule is that `open-computer-use` runs inside the graphical session
 it controls. Do not run it as a detached system service and expect it to see
 arbitrary VNC sessions.
 
+## Desktop Hub
+
+The human takeover UI is served at:
+
+```text
+https://desktops.internal.therealrishabh.com
+```
+
+`codex-desktop-hub.service` binds to `127.0.0.1:8765`, reads the same desktop
+manifests as the MCP broker, and proxies each desktop's local noVNC listener
+through stable paths:
+
+```text
+/desktop/<desktop-id>/
+```
+
+Use the hub to start a browser, terminal, or blank desktop, open the live noVNC
+view, stop sessions, and prune stopped session directories. The route is
+internal-only through Caddy and Tailscale DNS; the per-desktop VNC/noVNC ports
+still stay bound to localhost.
+
 ## Commands
 
 Start a browser desktop:
@@ -69,6 +90,7 @@ Inspect one desktop:
 ```bash
 codex-desktop status <desktop-id>
 codex-desktop env <desktop-id>
+codex-desktop screenshot --output /tmp/desktop.png <desktop-id>
 ```
 
 Run a command in the desktop session:
@@ -111,6 +133,17 @@ It also proxies the Open Computer Use tools into the selected desktop:
 - `press_key`
 - `set_value`
 
+`get_app_state` keeps the upstream Open Computer Use accessibility tree as the
+semantic source of truth and adds a PNG screenshot captured from the desktop's
+Xvfb framebuffer when upstream does not return image content. This means Codex
+can still see arbitrary applications visually even when an app exposes a weak
+AT-SPI tree.
+
+`press_key` is handled by the broker with `xdotool` inside the selected desktop
+environment. The upstream Open Computer Use key mapper is useful when available,
+but this direct X11 fallback keeps common key presses such as `Return`, `Tab`,
+and `ctrl+l` working consistently in temporary desktops.
+
 If a Computer Use tool is called without `desktop_id` and exactly one desktop is
 running, that desktop is used. If no desktop is running, the broker starts a
 browser desktop automatically. If multiple desktops are running, pass
@@ -133,9 +166,9 @@ config is seeded and ask Codex to call `desktop_start`, then `list_apps`.
 ## Network Notes
 
 The desktop's VNC and noVNC listeners bind to `127.0.0.1` by default. This keeps
-temporary desktops private to the server and Codex process. If a human needs to
-view one from another machine, tunnel the printed noVNC port over SSH or change
-`CODEX_DESKTOP_LISTEN_HOST` / `CODEX_DESKTOP_PUBLIC_HOST` in the managed service
-environment.
+temporary desktops private to the server, Codex process, and desktop hub. Human
+takeover should normally go through
+`https://desktops.internal.therealrishabh.com` instead of exposing random noVNC
+ports.
 
 Do not expose these temporary desktops publicly without authentication.

@@ -14,6 +14,7 @@ default_public_host="${CODEX_DESKTOP_PUBLIC_HOST:-$default_listen_host}"
 default_vnc_base="${CODEX_DESKTOP_VNC_BASE_PORT:-5900}"
 default_web_base="${CODEX_DESKTOP_WEB_BASE_PORT:-6900}"
 at_spi_bus_launcher="${CODEX_AT_SPI_BUS_LAUNCHER:-at-spi-bus-launcher}"
+novnc_web_root="${CODEX_NOVNC_WEB_ROOT:-}"
 
 usage() {
   cat <<'USAGE'
@@ -25,6 +26,7 @@ Usage:
   codex-desktop status [--json] ID
   codex-desktop env ID
   codex-desktop env-json ID
+  codex-desktop screenshot [--json] [--geometry WxH+X+Y] [--output PATH] ID
   codex-desktop exec ID -- COMMAND...
   codex-desktop stop ID
   codex-desktop prune
@@ -262,19 +264,48 @@ run_session() {
     -rfbport "$vnc_port" -o "$dir/x11vnc.log" > "$dir/x11vnc.stdout.log" 2>&1 &
   pids+=("$!")
 
+  local novnc_started=0
   if command -v novnc_proxy >/dev/null 2>&1; then
     novnc_proxy --listen "$listen_host:$web_port" --vnc "$listen_host:$vnc_port" \
       > "$dir/novnc.log" 2>&1 &
     pids+=("$!")
+    novnc_started=1
   elif command -v websockify >/dev/null 2>&1; then
-    for web_root in /run/current-system/sw/share/novnc /run/current-system/sw/share/noVNC; do
+    local web_roots=()
+    if [[ -n "$novnc_web_root" ]]; then
+      web_roots+=("$novnc_web_root")
+    fi
+    web_roots+=(
+      /run/current-system/sw/share/novnc
+      /run/current-system/sw/share/noVNC
+      /run/current-system/sw/share/webapps/novnc
+    )
+    for web_root in "${web_roots[@]}"; do
       if [[ -d "$web_root" ]]; then
         websockify --web "$web_root" "$listen_host:$web_port" "$listen_host:$vnc_port" \
           > "$dir/novnc.log" 2>&1 &
         pids+=("$!")
+        novnc_started=1
         break
       fi
     done
+  fi
+  if (( novnc_started == 0 )); then
+    echo "No noVNC launcher or websockify web root is available" >&2
+    exit 1
+  fi
+
+  local novnc_ready=0
+  for _ in $(seq 1 40); do
+    if ! port_is_free "$web_port"; then
+      novnc_ready=1
+      break
+    fi
+    sleep 0.25
+  done
+  if (( novnc_ready == 0 )); then
+    echo "noVNC did not begin listening on $listen_host:$web_port" >&2
+    exit 1
   fi
 
   if [[ -s "$argv_file" ]]; then
@@ -556,6 +587,106 @@ env_json_desktop() {
   cat "$dir/env.json"
 }
 
+screenshot_desktop() {
+  ensure_state
+  need jq
+  need magick
+  need mktemp
+  need python3
+  need xwd
+
+  local output_json=0
+  local output_path=""
+  local geometry=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --json)
+        output_json=1
+        shift
+        ;;
+      --geometry)
+        geometry="$2"
+        shift 2
+        ;;
+      --output)
+        output_path="$2"
+        shift 2
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*)
+        echo "Unknown screenshot argument: $1" >&2
+        exit 2
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+
+  local id_arg="${1:-}"
+  local dir
+  dir="$(desktop_dir "$id_arg")"
+  if [[ ! -f "$dir/env" ]]; then
+    echo "Desktop environment is not ready: $id_arg" >&2
+    exit 1
+  fi
+  if [[ -n "$geometry" && ! "$geometry" =~ ^[0-9]+x[0-9]+\+[0-9]+\+[0-9]+$ ]]; then
+    echo "Invalid screenshot geometry: $geometry" >&2
+    exit 2
+  fi
+
+  set -a
+  # shellcheck disable=SC1090,SC1091
+  . "$dir/env"
+  set +a
+
+  local tmp_xwd tmp_png dimensions width height
+  tmp_xwd="$(mktemp "$dir/screenshot.XXXXXX.xwd")"
+  tmp_png="$(mktemp "$dir/screenshot.XXXXXX.png")"
+
+  xwd -root -silent -out "$tmp_xwd"
+  if [[ -n "$geometry" ]]; then
+    magick "$tmp_xwd" -crop "$geometry" +repage "$tmp_png"
+  else
+    magick "$tmp_xwd" "$tmp_png"
+  fi
+  dimensions="$(magick identify -format '%w %h' "$tmp_png")"
+  read -r width height <<< "$dimensions"
+
+  if [[ -n "$output_path" ]]; then
+    install -m 0600 "$tmp_png" "$output_path"
+  fi
+
+  if (( output_json )); then
+    python3 - "$id_arg" "$geometry" "$output_path" "$width" "$height" "$tmp_png" <<'PY'
+import base64
+import json
+import sys
+from pathlib import Path
+
+desktop_id, geometry, output_path, width, height, png_path = sys.argv[1:]
+payload = {
+    "desktop_id": desktop_id,
+    "mimeType": "image/png",
+    "width": int(width),
+    "height": int(height),
+    "geometry": geometry,
+    "outputPath": output_path,
+    "data": base64.b64encode(Path(png_path).read_bytes()).decode("ascii"),
+}
+print(json.dumps(payload, separators=(",", ":")))
+PY
+  elif [[ -n "$output_path" ]]; then
+    printf '%s\n' "$output_path"
+  else
+    cat "$tmp_png"
+  fi
+  rm -f "$tmp_xwd" "$tmp_png"
+}
+
 exec_desktop() {
   ensure_state
   local id_arg="$1"
@@ -655,6 +786,9 @@ main() {
       ;;
     env-json)
       env_json_desktop "$@"
+      ;;
+    screenshot)
+      screenshot_desktop "$@"
       ;;
     exec)
       exec_desktop "$@"

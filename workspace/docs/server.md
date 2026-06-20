@@ -39,6 +39,7 @@ still `/srv/ops`.
 - Vaultwarden route: `vault.internal.therealrishabh.com`.
 - Backrest route: `backups.internal.therealrishabh.com`.
 - Syncthing route: `sync.internal.therealrishabh.com`.
+- Codex desktop takeover route: `desktops.internal.therealrishabh.com`.
 - Samba share: `smb://files.internal.therealrishabh.com/Remote`.
 
 ## Storage And User Content
