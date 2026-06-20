@@ -13,13 +13,6 @@ trust_level = "trusted"
 [projects."/srv/workspace"]
 trust_level = "trusted"
 
-[mcp_servers.cloudflare-api]
-url = "https://mcp.cloudflare.com/mcp"
-
-[mcp_servers.beeper]
-url = "http://macbook/v0/mcp"
-bearer_token_env_var = "CODEX_BEEPER_TOKEN"
-
 [plugins."canva@openai-curated"]
 enabled = true
 
@@ -39,4 +32,7 @@ enabled = true
 enabled = true
 
 [plugins."open-computer-use@homelab-local"]
+enabled = true
+
+[plugins."beeper@homelab-local"]
 enabled = true

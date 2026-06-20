@@ -11,6 +11,10 @@ integration.
 - `.agents/plugins/marketplace.json` is the repo-local Codex plugin marketplace
   used by bootstrap for Homelab-owned plugins.
 
+Prefer wrapping durable MCP integrations as local plugins instead of adding
+top-level `mcp_servers` entries. Use direct MCP config only for short-lived
+experiments or when a plugin wrapper would add no durable value.
+
 Live Codex state, sessions, caches, auth materialization, and installed plugin
 artifacts belong under `/srv/state/codex`.
 

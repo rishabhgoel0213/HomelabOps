@@ -68,7 +68,7 @@ still `/srv/ops`.
 - Runtime Codex home: `/srv/state/codex`.
 - Runtime Codex service: `codex-remote-control.service`.
 - Daily Codex package update timer: `codex-auto-update.timer` at 04:30.
-- Enabled MCP servers include Cloudflare API and Beeper.
+- Durable MCP integrations are wrapped as plugins by default.
 - Enabled curated plugins include Canva, Cloudflare, GitHub, Gmail, Google
   Calendar, and Google Drive.
-
+- Enabled local plugins include Beeper and Open Computer Use.

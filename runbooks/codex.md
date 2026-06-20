@@ -31,9 +31,15 @@ credentials into the SOPS keys `codex-auth.json` and
 `codex-credentials.json`. Nix materializes those secrets back into
 `/srv/state/codex` when the Codex service starts.
 
-`codex-bootstrap` seeds config, restores auth from `/run/secrets`, configures
-the Cloudflare MCP server, and installs enabled plugins declared in
-`/srv/ops/codex/config.toml`.
+`codex-bootstrap` seeds config, restores auth from `/run/secrets`, registers
+the local plugin marketplace, and installs enabled plugins declared in
+`/srv/ops/codex/config.toml`. The curated Cloudflare plugin owns the Cloudflare
+API MCP server.
+
+Durable MCP integrations should normally be wrapped as plugins in
+`/srv/ops/codex/plugins` and exposed through the `homelab-local` marketplace.
+Top-level `[mcp_servers.*]` config is reserved for short-lived experiments or
+cases where a plugin wrapper would add no durable value.
 
 `codex-update` updates the repo-owned Codex package override in
 `/srv/ops/packages/codex.nix` to the latest stable upstream `rust-v*` tag and

@@ -1,6 +1,6 @@
 {
   "name": "open-computer-use",
-  "version": "0.1.53+codex.homelab",
+  "version": "0.1.53+codex.20260620001133",
   "description": "Open Computer Use wrapper for Codex temporary Linux desktops.",
   "author": {
     "name": "HomelabOps"
@@ -35,6 +35,8 @@
       "Inspect the current desktop UI.",
       "Stop idle Codex desktops."
     ],
-    "brandColor": "#0E7490"
+    "brandColor": "#0E7490",
+    "composerIcon": "./assets/open-computer-use-small.svg",
+    "logo": "./assets/open-computer-use.svg"
   }
 }

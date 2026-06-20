@@ -1,6 +1,7 @@
 # Beeper MCP Runbook
 
-Codex reads Beeper through Beeper Desktop's local MCP server on the MacBook.
+Codex reads Beeper through a repo-owned `beeper@homelab-local` plugin. The
+plugin wraps Beeper Desktop's local MCP server on the MacBook.
 
 ## MacBook
 
@@ -19,10 +20,16 @@ http://macbook/v0/mcp
 
 ## Server
 
-Codex declares the MCP server in:
+Codex enables the Beeper plugin in:
 
 ```text
 /srv/ops/codex/config.toml
+```
+
+The plugin source lives at:
+
+```text
+/srv/ops/codex/plugins/beeper
 ```
 
 The Beeper access token is stored in sops as:

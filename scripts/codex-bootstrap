@@ -65,10 +65,6 @@ if [[ -f "$homelab_codex_marketplace_file" ]]; then
   fi
 fi
 
-if ! "$codex_cmd" mcp get cloudflare-api >/dev/null 2>&1; then
-  "$codex_cmd" mcp add cloudflare-api --url https://mcp.cloudflare.com/mcp
-fi
-
 if [[ -f "$homelab_codex_config_source" ]]; then
   awk '
     /^\[plugins\."[^"]+"\]$/ {
