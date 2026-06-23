@@ -45,9 +45,11 @@ cases where a plugin wrapper would add no durable value.
 `/srv/ops/packages/codex.nix` to the latest stable upstream `rust-v*` tag and
 refreshes the fixed-output source and Cargo vendor hashes.
 
-`codex-auto-update` runs the same package update, switches the NixOS generation
-only when the package file changes, and restarts `codex-remote-control.service`.
-The systemd timer `codex-auto-update.timer` runs it every morning at 04:30.
+`codex-auto-update` runs the same package update and switches the NixOS
+generation only when the package file changes. It does not restart
+`codex-remote-control.service`; restart that service manually when you want the
+running Codex process to move to the new package. The systemd timer
+`codex-auto-update.timer` runs it every morning at 04:30.
 
 `codex-prune-user-install` removes the legacy `~/.local/bin/codex` shim when it
 points into `~/.codex`. If no running process still has files open in

@@ -6,6 +6,7 @@ host="${HOST:-nixos-pc}"
 target="${1:-latest}"
 package_file="${CODEX_PACKAGE_FILE:-$repo/packages/codex.nix}"
 lock_file="${CODEX_UPDATE_LOCK_FILE:-/tmp/homelab-codex-update.lock}"
+update_user="${CODEX_UPDATE_USER:-rishabh}"
 
 exec 9>"$lock_file"
 if ! flock -n 9; then
@@ -21,7 +22,15 @@ fi
 before_hash="$(sha256sum "$package_file" | awk '{print $1}')"
 before_version="$(perl -ne 'if (/version = "([^"]+)";/) { print $1; exit }' "$package_file")"
 
-"$repo/scripts/update-codex" "$target"
+if [[ "$(id -u)" -eq 0 ]]; then
+  runuser -u "$update_user" -- env \
+    CODEX_OPS_ROOT="$repo" \
+    CODEX_PACKAGE_FILE="$package_file" \
+    HOST="$host" \
+    "$repo/scripts/update-codex" "$target"
+else
+  "$repo/scripts/update-codex" "$target"
+fi
 
 after_hash="$(sha256sum "$package_file" | awk '{print $1}')"
 after_version="$(perl -ne 'if (/version = "([^"]+)";/) { print $1; exit }' "$package_file")"
@@ -32,6 +41,9 @@ if [[ "$before_hash" == "$after_hash" ]]; then
 fi
 
 echo "Codex changed from $before_version to $after_version; switching NixOS generation." >&2
-nixos-rebuild switch --impure --flake "$repo#$host"
-systemctl restart codex-remote-control.service
-echo "Codex auto-update applied $after_version." >&2
+if [[ "$(id -u)" -eq 0 ]]; then
+  nixos-rebuild switch --impure --flake "$repo#$host"
+else
+  sudo nixos-rebuild switch --impure --flake "$repo#$host"
+fi
+echo "Codex auto-update applied $after_version. Restart codex-remote-control.service manually when ready." >&2

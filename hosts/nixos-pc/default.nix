@@ -20,6 +20,7 @@
 
     ../../modules/services/vaultwarden.nix
     ../../modules/services/backrest.nix
+    ../../modules/services/eden.nix
     ../../modules/services/public-site.nix
     ../../modules/services/syncthing.nix
     ../../modules/services/samba.nix
@@ -56,6 +57,7 @@
     };
 
     vaultwarden.enable = true;
+    eden.enable = true;
     syncthing.enable = true;
     samba.enable = true;
   };

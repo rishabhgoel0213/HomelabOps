@@ -158,6 +158,7 @@ in
     };
 
     vaultwarden.enable = mkEnableOption "Vaultwarden private password vault";
+    eden.enable = mkEnableOption "Eden private Switch emulator desktop";
     syncthing.enable = mkEnableOption "Syncthing private file sync";
     samba.enable = mkEnableOption "Private SMB file share";
 

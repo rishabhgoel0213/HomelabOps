@@ -1,6 +1,17 @@
 { config, lib, pkgs, ... }:
 
 {
+  boot.blacklistedKernelModules = [ "nouveau" ];
+  boot.extraModprobeConfig = ''
+    options nvidia-drm modeset=1
+  '';
+  boot.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_uvm"
+    "nvidia_drm"
+  ];
+
   hardware.graphics.enable = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
