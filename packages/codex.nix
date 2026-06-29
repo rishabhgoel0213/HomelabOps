@@ -6,9 +6,9 @@
 }:
 
 let
-  version = "0.142.0";
-  srcHash = "sha256-F8wlv0vSuljNFDgIzoeuVxvD0dk90z2FBtpBTMih7AA=";
-  cargoHash = "sha256-fvEFNE12J6zaLZrN6oQB8X+jXoKPSCWrL17Sl28+7/c=";
+  version = "0.142.3";
+  srcHash = "sha256-dxkyaWpgzqpAVFojDYQ6JpMPNBIX+d7xjIyLic4Cs8A=";
+  cargoHash = "sha256-1gDiCB3Nf/0aIm+EoL3g9C0xbCi3cv6TfH5VytjJpOY=";
 in
 codex.overrideAttrs (_old: rec {
   pname = "codex";

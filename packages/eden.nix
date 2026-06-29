@@ -1,5 +1,4 @@
 {
-  appimage-run,
   fetchurl,
   lib,
   makeWrapper,
@@ -19,9 +18,17 @@ stdenvNoCC.mkDerivation rec {
   nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
+    runHook preInstall
+
     install -Dm0755 "$src" "$out/lib/eden/Eden.AppImage"
-    makeWrapper ${appimage-run}/bin/appimage-run "$out/bin/eden" \
-      --add-flags "$out/lib/eden/Eden.AppImage"
+    "$out/lib/eden/Eden.AppImage" --appimage-extract
+    mkdir -p "$out/lib/eden/squashfs-root"
+    cp -R squashfs-root/. "$out/lib/eden/squashfs-root/"
+    chmod +x "$out/lib/eden/squashfs-root/AppRun"
+
+    makeWrapper "$out/lib/eden/squashfs-root/AppRun" "$out/bin/eden"
+
+    runHook postInstall
   '';
 
   meta = {
